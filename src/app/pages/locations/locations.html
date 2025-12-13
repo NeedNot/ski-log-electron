@@ -1,0 +1,77 @@
+<hlm-alert-dialog [state]="_showDeleteConfirmationDialog()" (close)="(closeDialog)">
+  <hlm-alert-dialog-content *brnAlertDialogContent="let ctx">
+    <hlm-alert-dialog-header>
+      <h2 hlmAlertDialogTitle>Are you absolutely sure?</h2>
+      <p hlmAlertDialogDescription>
+        This action cannot be undone. This will permanently delete your account and remove your data
+        from our servers.
+      </p>
+    </hlm-alert-dialog-header>
+    <hlm-alert-dialog-footer>
+      <button hlmAlertDialogCancel (click)="ctx.close()">Cancel</button>
+      <button hlmAlertDialogAction (click)="confirmDeleteLocation()">Continue</button>
+    </hlm-alert-dialog-footer>
+  </hlm-alert-dialog-content>
+</hlm-alert-dialog>
+<div class="sm:w-4/5 m-5 sm:m-auto max-w-2xl sm:py-16">
+  <div hlmItem variant="outline" class="mb-8">
+    <div hlmItemContent class="space-y-2">
+      <div class="flex items-center space-x-4 font-semibold">
+        <div class="size-8 grid items-center rounded-md justify-center bg-blue-50">
+          <ng-icon hlm size="sm" name="lucideMapPin" class="text-blue-600" />
+        </div>
+        <h3>Add new location</h3>
+      </div>
+      <div class="space-y-1">
+        <div class="flex items-center gap-3">
+          <input
+            hlmInput
+            type="text"
+            id="name"
+            placeholder="Location name"
+            [formControl]="newLocationControl"
+          />
+          <div hlmItemActions>
+            <button (click)="addLocation()" [disabled]="newLocationControl.invalid" hlmBtn>
+              <ng-icon hlm size="sm" name="lucidePlus" /> Add location
+            </button>
+          </div>
+        </div>
+        <!-- todo error messages -->
+        @if (newLocationControl.hasError('duplicate')) {
+        <p class="pl-3 text-xs text-destructive">A location with this name already exists</p>
+        }
+      </div>
+    </div>
+  </div>
+  <div class="space-y-2">
+    @if (locations.length === 0) {
+    <div class="flex flex-col items-center gap-2 p-4 font-semibold">
+      <div class="size-12 grid items-center rounded-full justify-center bg-zinc-100">
+        <ng-icon hlm name="lucideMapPin" class="text-zinc-600" />
+      </div>
+      <h3>Add your first location</h3>
+    </div>
+    } @for (location of locations; track location.id) {
+    <div hlmItem variant="outline" class="flex justify-between group">
+      <div class="flex items-center space-x-4 font-semibold">
+        <div class="size-8 grid items-center rounded-full justify-center bg-zinc-100">
+          <ng-icon hlm size="sm" name="lucideMapPin" class="text-zinc-600" />
+        </div>
+        <h3>{{ location.name }}</h3>
+      </div>
+
+      <button
+        hlmBtn
+        title="Delete"
+        (click)="deleteLocation(location.id)"
+        size="icon"
+        variant="secondary"
+        class="size-8 hover:cursor-pointer hover:bg-red-50 opacity-0 group-hover:opacity-100 rounded-full"
+      >
+        <ng-icon hlm size="sm" name="lucideTrash2" class="text-red-500" />
+      </button>
+    </div>
+    }
+  </div>
+</div>
