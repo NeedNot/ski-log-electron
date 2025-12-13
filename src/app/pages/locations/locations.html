@@ -14,7 +14,7 @@
   </hlm-alert-dialog-content>
 </hlm-alert-dialog>
 <div class="sm:w-4/5 m-5 sm:m-auto max-w-2xl sm:py-16">
-  <div hlmItem variant="outline" class="mb-8">
+  <div hlmItem variant="outline" class="mb-8 bg-card text-card-foreground shadow-sm">
     <div hlmItemContent class="space-y-2">
       <div class="flex items-center space-x-4 font-semibold">
         <div class="size-8 grid items-center rounded-md justify-center bg-blue-50">
@@ -37,7 +37,6 @@
             </button>
           </div>
         </div>
-        <!-- todo error messages -->
         @if (newLocationControl.hasError('duplicate')) {
         <p class="pl-3 text-xs text-destructive">A location with this name already exists</p>
         }
@@ -47,16 +46,14 @@
   <div class="space-y-2">
     @if (locations.length === 0) {
     <div class="flex flex-col items-center gap-2 p-4 font-semibold">
-      <div class="size-12 grid items-center rounded-full justify-center bg-zinc-100">
-        <ng-icon hlm name="lucideMapPin" class="text-zinc-600" />
-      </div>
+        <ng-icon hlm name="lucideMapPin" class="text-zinc-600 m-4" />
       <h3>Add your first location</h3>
     </div>
     } @for (location of locations; track location.id) {
-    <div hlmItem variant="outline" class="flex justify-between group">
+    <div hlmItem variant="outline" class="flex bg-card text-card-foreground shadow-sm justify-between group">
       <div class="flex items-center space-x-4 font-semibold">
         <div class="size-8 grid items-center rounded-full justify-center bg-zinc-100">
-          <ng-icon hlm size="sm" name="lucideMapPin" class="text-zinc-600" />
+          <ng-icon hlm size="sm" name="lucideMapPin" class="text-zinc-700" />
         </div>
         <h3>{{ location.name }}</h3>
       </div>

@@ -1,22 +1,16 @@
-import { Component, inject, signal } from '@angular/core';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { Component, signal } from '@angular/core';
 import { AbstractControl, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideMapPin, lucidePlus, lucideTrash, lucideTrash2 } from '@ng-icons/lucide';
+import { lucideMapPin, lucidePlus, lucideTrash2 } from '@ng-icons/lucide';
 import {
-  BrnAlertDialog,
   BrnAlertDialogImports,
-  BrnAlertDialogTrigger,
 } from '@spartan-ng/brain/alert-dialog';
-import { BrnDialogState } from '@spartan-ng/brain/dialog';
-import { HlmAlertDialog, HlmAlertDialogImports } from '@spartan-ng/helm/alert-dialog';
+import { HlmAlertDialogImports } from '@spartan-ng/helm/alert-dialog';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmIcon, HlmIconImports } from '@spartan-ng/helm/icon';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 import { HlmItemImports } from '@spartan-ng/helm/item';
-import { HlmScrollAreaImports } from '@spartan-ng/helm/scroll-area';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
-import { debounceTime, map } from 'rxjs';
 
 @Component({
   selector: 'app-locations',
@@ -30,7 +24,7 @@ import { debounceTime, map } from 'rxjs';
     ReactiveFormsModule,
     HlmSeparatorImports,
     HlmAlertDialogImports,
-    BrnAlertDialogImports,
+    BrnAlertDialogImports
   ],
   templateUrl: './locations.html',
   providers: [provideIcons({ lucideMapPin, lucidePlus, lucideTrash2 })],
