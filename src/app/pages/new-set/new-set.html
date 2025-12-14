@@ -1,0 +1,86 @@
+<div class="sm:w-4/5 m-5 sm:m-auto max-w-2xl sm:py-16">
+  <section hlmCard>
+    <div hlmCardContent>
+      <div class="space-y-7">
+        <form>
+          <div hlmFieldGroup>
+            <fieldset hlmFieldSet>
+              <legend hlmFieldLegend>Set details</legend>
+
+              <div hlmFieldGroup>
+                <div class="flex gap-x-4 gap-y-7 flex-wrap">
+                  <div hlmField class="w-fit">
+                    <label hlmFieldLabel for="field-date">Date</label>
+                    <input hlmInput type="date" id="field-date" value="today" />
+                  </div>
+                  <div hlmField class="w-fit">
+                    <label hlmFieldLabel for="field-location">Location</label>
+                    <brn-select class="inline-block" placeholder="Select an option">
+                      <hlm-select-trigger class="w-56">
+                        <hlm-select-value />
+                      </hlm-select-trigger>
+                      <hlm-select-content>
+                        @for (location of locations; track location.id) {
+                        <hlm-option value="{{ location.id }}">{{ location.name }}</hlm-option>
+                        }
+                      </hlm-select-content>
+                    </brn-select>
+                  </div>
+                  <div hlmField class="w-fit">
+                    <label hlmFieldLabel for="field-setting">Setting</label>
+                    <brn-select class="inline-block" value="practice">
+                      <hlm-select-trigger class="w-36">
+                        <hlm-select-value />
+                      </hlm-select-trigger>
+                      <hlm-select-content>
+                        <hlm-option value="practice">Practice</hlm-option>
+                        <hlm-option value="Tournament">Tournament</hlm-option>
+                      </hlm-select-content>
+                    </brn-select>
+                  </div>
+                </div>
+                <div hlmField>
+                  <label hlmFieldLabel for="field-comments">Comments</label>
+                  <textarea
+                    hlmTextarea
+                    class="resize-none"
+                    id="field-comments"
+                    placeholder="Try anything new?"
+                  ></textarea>
+                </div>
+              </div>
+            </fieldset>
+            <hlm-field-separator />
+          </div>
+        </form>
+
+        <form>
+          <div hlmFieldGroup>
+            <fieldset hlmFieldSet>
+              <div class="flex justify-between">
+                <legend hlmFieldLegend>Passes</legend>
+                <button
+                  type="button"
+                  hlmBtn
+                  size="sm"
+                  variant="secondary"
+                  (click)="addPass()"
+                  class="font-medium w-min bg-blue-50 hover:bg-blue-50/75 text-blue-500"
+                >
+                  <ng-icon hlm size="sm" name="lucidePlus" /> Add pass
+                </button>
+              </div>
+              @for (pass of store.passes(); track pass.id; let i = $index) {
+              <app-pass-card [index]="i" [passId]="pass.id" />
+              }
+              <div hlmField orientation="horizontal">
+                <button hlmBtn>Submit</button>
+                <button hlmBtn variant="outline">Cancel</button>
+              </div>
+            </fieldset>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>

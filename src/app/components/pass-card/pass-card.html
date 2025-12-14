@@ -1,0 +1,98 @@
+<div hlmCard class="relative overflow-clip rounded-md">
+  <div
+    [ngClass]="ropeColor()"
+    class="absolute border-l-6 bg-transparent! left-0 top-0 bottom-0 w-1.5"
+  ></div>
+  <div hlmCardContent>
+    <div class="flex gap-4">
+      <div
+        [ngClass]="ropeColor()"
+        class="size-8 shrink-0 grid justify-center text-sm rounded-md items-center"
+      >
+        #{{ index + 1 }}
+      </div>
+      <div hlmFieldGroup>
+        <div class="flex w-full flex-wrap gap-y-7 gap-x-4">
+          <div hlmField class="w-fit">
+            <label hlmFieldLabel for="field-speed">Speed</label>
+            <brn-select class="inline-block" value="MPH_36">
+              <hlm-select-trigger class="w-fit">
+                <hlm-select-value />
+              </hlm-select-trigger>
+              <hlm-select-content>
+                @for (speed of boatSpeeds; track $index) {
+                <hlm-option value="{{ speed[0] }}">{{ speed[1] }}</hlm-option>
+                }
+              </hlm-select-content>
+            </brn-select>
+          </div>
+          <div hlmField class="w-fit">
+            <label hlmFieldLabel for="field-rope">Rope length</label>
+            <brn-select
+              [value]="pass()?.ropeLength || 'L_15_OFF'"
+              (valueChange)="setRopeLength($any($event))"
+              class="inline-block"
+            >
+              <hlm-select-trigger class="w-fit">
+                <hlm-select-value />
+              </hlm-select-trigger>
+              <hlm-select-content>
+                @for (length of ropeLengths; track $index) {
+                <hlm-option value="{{ length[0] }}">{{ length[1] }}</hlm-option>
+                }
+              </hlm-select-content>
+            </brn-select>
+          </div>
+          <div hlmField class="w-fit">
+            <label hlmFieldLabel for="field-points">Points</label>
+            <input
+              hlmInput
+              [value]="pass()?.score || 0"
+              (input)="setPoints($any($event.target).valueAsNumber)"
+              min="0"
+              max="6"
+              step="0.5"
+              type="number"
+              name="field-points"
+            />
+          </div>
+          <!-- todo add video button. angular asChild? -->
+          <div
+            class="mt-auto ml-auto"
+            (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)"
+            (drop)="onDrop($event)"
+          >
+            <button
+              type="button"
+              hlmBtn
+              variant="secondary"
+              class="w-full"
+              (click)="fileInput.click()"
+            >
+              <ng-icon size="sm" hlmIcon name="lucidePlus" />
+              Add video
+            </button>
+
+            <input
+              #fileInput
+              type="file"
+              class="hidden"
+              accept="video/*"
+              (change)="onFileSelect($event)"
+            />
+          </div>
+        </div>
+        <div hlmField>
+          <label hlmFieldLabel for="field-comments">Comments</label>
+          <textarea
+            hlmTextarea
+            class="resize-none"
+            id="field-comments"
+            placeholder="How did you feel?"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

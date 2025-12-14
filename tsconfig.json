@@ -84,6 +84,9 @@
       ],
       "@spartan-ng/helm/alert-dialog": [
         "./src/app/libs/ui/alert-dialog/src/index.ts"
+      ],
+      "@spartan-ng/helm/field": [
+        "./src/app/libs/ui/field/src/index.ts"
       ]
     }
   },

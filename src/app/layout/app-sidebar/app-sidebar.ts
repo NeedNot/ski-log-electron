@@ -6,6 +6,7 @@ import {
   lucideInbox,
   lucideLocate,
   lucideMapPin,
+  lucidePlus,
   lucideSearch,
   lucideSettings,
 } from '@ng-icons/lucide';
@@ -20,6 +21,7 @@ import { HlmSidebarImports } from '@spartan-ng/helm/sidebar';
     provideIcons({
       lucideHouse,
       lucideMapPin,
+      lucidePlus
     }),
   ],
 })
@@ -35,5 +37,10 @@ export class AppSidebar {
       url: '/locations',
       icon: 'lucideMapPin',
     },
+    {
+      title: 'Create Set',
+      url: '/new-set',
+      icon: 'lucidePlus'
+    }
   ];
 }
