@@ -32,4 +32,28 @@ export class NewSetStore {
   updatePass(id: string, changes: Partial<SkiPass>) {
     this._passes.update((passes) => passes.map((p) => (p.id === id ? { ...p, ...changes } : p)));
   }
+
+  deletePass(id: string) {
+    this._passes.update((passes) => passes.filter((p) => p.id !== id));
+  }
+
+  movePassUp(id: string) {
+    this._passes.update((passes) => {
+      const index = passes.findIndex((p) => p.id === id);
+      if (index <= 0) return passes;
+      const [pass] = passes.splice(index, 1);
+      passes.splice(index - 1, 0, pass);
+      return passes;
+    });
+  }
+
+  movePassDown(id: string) {
+    this._passes.update((passes) => {
+      const index = passes.findIndex((p) => p.id === id);
+      if (index === -1 || index >= passes.length - 1) return passes;
+      const [pass] = passes.splice(index, 1);
+      passes.splice(index + 1, 0, pass);
+      return passes;
+    });
+  }
 }

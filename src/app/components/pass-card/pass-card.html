@@ -4,6 +4,33 @@
     class="absolute border-l-6 bg-transparent! left-0 top-0 bottom-0 w-1.5"
   ></div>
   <div hlmCardContent>
+    <div
+      class="absolute flex flex-col top-20 opacity-0 hover:opacity-100 transition-opacity gap-4 grid-rows-3 items-center justify-center w-8"
+    >
+      <button (click)="moveUp()" title="Move up" hlmBtn type="button" variant="ghost" size="icon">
+        <ng-icon hlm size="sm" name="lucideArrowUp" />
+      </button>
+      <button
+        (click)="deletePass()"
+        title="Delete"
+        hlmBtn
+        type="button"
+        variant="ghost"
+        size="icon"
+      >
+        <ng-icon hlm size="sm" name="lucideTrash2" />
+      </button>
+      <button
+        (click)="moveDown()"
+        title="Move down"
+        hlmBtn
+        type="button"
+        variant="ghost"
+        size="icon"
+      >
+        <ng-icon hlm size="sm" name="lucideArrowDown" />
+      </button>
+    </div>
     <div class="flex gap-4">
       <div
         [ngClass]="ropeColor()"

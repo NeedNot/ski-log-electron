@@ -12,7 +12,7 @@ import { NewSetStore } from '../../pages/new-set/new-set.store';
 import { BoatSpeedLabel, RopeLengthColors, RopeLengthLabel } from '../../../constants';
 import { NgClass } from '@angular/common';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucidePlus } from '@ng-icons/lucide';
+import { lucideArrowDown, lucideArrowUp, lucidePlus, lucideTrash2 } from '@ng-icons/lucide';
 
 @Component({
   selector: 'app-pass-card',
@@ -28,7 +28,7 @@ import { lucidePlus } from '@ng-icons/lucide';
     NgIcon,
     NgClass,
   ],
-  providers: [provideIcons({ lucidePlus })],
+  providers: [provideIcons({ lucidePlus, lucideTrash2, lucideArrowUp, lucideArrowDown })],
   templateUrl: './pass-card.html',
 })
 export class PassCard {
@@ -54,6 +54,18 @@ export class PassCard {
 
   setPoints(value: number) {
     this.store.updatePass(this.passId, { score: value });
+  }
+
+  deletePass() {
+    this.store.deletePass(this.passId);
+  }
+
+  moveUp() {
+    this.store.movePassUp(this.passId);
+  }
+
+  moveDown() {
+    this.store.movePassDown(this.passId);
   }
 
   onDragOver(event: DragEvent) {
