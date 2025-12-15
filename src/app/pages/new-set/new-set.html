@@ -71,7 +71,12 @@
                 </button>
               </div>
               @for (pass of store.passes(); track pass.id; let i = $index) {
-              <app-pass-card [index]="i" [passId]="pass.id" />
+              <app-pass-card
+                [index]="i"
+                [isFirst]="i === 0"
+                [isLast]="i === store.passes().length - 1"
+                [passId]="pass.id"
+              />
               }
               <div hlmField orientation="horizontal">
                 <button hlmBtn>Submit</button>

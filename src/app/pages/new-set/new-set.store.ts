@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { BoatSpeed, RopeLength, SkiPass } from '../../../types';
-import { getRopeByIndex, getRopeIndex } from '../../../utils';
+import { getRopeByIndex, getRopeIndex, makeid } from '../../../utils';
 
 @Injectable()
 export class NewSetStore {
@@ -17,7 +17,7 @@ export class NewSetStore {
     const ropeLengthIndex = lastPass ? getRopeIndex(lastPass.ropeLength) : -1;
 
     const pass: SkiPass = {
-      id: `new-${this.passes().length + 1}`,
+      id: makeid(6),
       ropeLength: didRunLastPass
         ? getRopeByIndex(ropeLengthIndex + 1)
         : lastPass?.ropeLength ?? RopeLength.L_15_OFF,

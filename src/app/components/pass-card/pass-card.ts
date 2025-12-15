@@ -33,6 +33,8 @@ import { lucideArrowDown, lucideArrowUp, lucidePlus, lucideTrash2 } from '@ng-ic
 })
 export class PassCard {
   @Input() index: number = 0;
+  @Input() isFirst: boolean = false;
+  @Input() isLast: boolean = false;
   @Input() passId!: string;
 
   store = inject(NewSetStore);
