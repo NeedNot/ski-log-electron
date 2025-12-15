@@ -56,4 +56,8 @@ export class NewSetStore {
       return passes;
     });
   }
+
+  clearPasses() {
+    this._passes.set([]);
+  }
 }

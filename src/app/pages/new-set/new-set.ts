@@ -50,4 +50,8 @@ export class NewSet {
   addPass() {
     this.store.addPass();
   }
+
+  clearPasses() {
+    this.store.clearPasses();
+  }
 }

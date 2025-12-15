@@ -78,9 +78,11 @@
                 [passId]="pass.id"
               />
               }
-              <div hlmField orientation="horizontal">
-                <button hlmBtn>Submit</button>
-                <button hlmBtn variant="outline">Cancel</button>
+              <div hlmField orientation="horizontal" class="justify-end">
+                <button hlmBtn (click)="clearPasses()" type="button" variant="outline">
+                  Clear
+                </button>
+                <button hlmBtn type="button">Submit</button>
               </div>
             </fieldset>
           </div>
