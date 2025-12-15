@@ -12,7 +12,7 @@
         #{{ index + 1 }}
       </div>
       <div hlmFieldGroup>
-        <div class="flex w-full flex-wrap gap-y-7 gap-x-4">
+        <div class="flex flex-wrap gap-x-4 gap-y-7">
           <div hlmField class="w-fit">
             <label hlmFieldLabel for="field-speed">Speed</label>
             <brn-select class="inline-block" value="MPH_36">
@@ -33,7 +33,7 @@
               (valueChange)="setRopeLength($any($event))"
               class="inline-block"
             >
-              <hlm-select-trigger class="w-fit">
+              <hlm-select-trigger class="w-32">
                 <hlm-select-value />
               </hlm-select-trigger>
               <hlm-select-content>
@@ -56,32 +56,24 @@
               name="field-points"
             />
           </div>
-          <!-- todo add video button. angular asChild? -->
-          <div
-            class="mt-auto ml-auto"
-            (dragover)="onDragOver($event)"
-            (dragleave)="onDragLeave($event)"
-            (drop)="onDrop($event)"
-          >
-            <button
-              type="button"
-              hlmBtn
-              variant="secondary"
-              class="w-full"
-              (click)="fileInput.click()"
-            >
-              <ng-icon size="sm" hlmIcon name="lucidePlus" />
-              Add video
-            </button>
+        </div>
+        <div
+          (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)"
+          (drop)="onDrop($event)"
+        >
+          <button type="button" hlmBtn variant="secondary" class="w-36" (click)="fileInput.click()">
+            <ng-icon size="sm" hlmIcon name="lucidePlus" />
+            Add video
+          </button>
 
-            <input
-              #fileInput
-              type="file"
-              class="hidden"
-              accept="video/*"
-              (change)="onFileSelect($event)"
-            />
-          </div>
+          <input
+            #fileInput
+            type="file"
+            class="hidden"
+            accept="video/*"
+            (change)="onFileSelect($event)"
+          />
         </div>
         <div hlmField>
           <label hlmFieldLabel for="field-comments">Comments</label>

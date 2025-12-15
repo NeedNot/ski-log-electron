@@ -1,11 +1,6 @@
 import { Component, computed, inject, Input } from '@angular/core';
-import {
-  BrnSelect,
-  BrnSelectValue,
-  BrnSelectContent,
-  BrnSelectImports,
-} from '@spartan-ng/brain/select';
-import { HlmSelectTrigger, HlmSelectOption, HlmSelectImports } from '@spartan-ng/helm/select';
+import { BrnSelectImports } from '@spartan-ng/brain/select';
+import { HlmSelectImports } from '@spartan-ng/helm/select';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { BoatSpeed, RopeLength } from '../../../types';
 import { HlmCardImports } from '@spartan-ng/helm/card';
@@ -16,6 +11,8 @@ import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { NewSetStore } from '../../pages/new-set/new-set.store';
 import { BoatSpeedLabel, RopeLengthColors, RopeLengthLabel } from '../../../constants';
 import { NgClass } from '@angular/common';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { lucidePlus } from '@ng-icons/lucide';
 
 @Component({
   selector: 'app-pass-card',
@@ -28,8 +25,10 @@ import { NgClass } from '@angular/common';
     HlmTextareaImports,
     HlmButtonImports,
     HlmIcon,
+    NgIcon,
     NgClass,
   ],
+  providers: [provideIcons({ lucidePlus })],
   templateUrl: './pass-card.html',
 })
 export class PassCard {
