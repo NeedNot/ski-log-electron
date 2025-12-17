@@ -1,0 +1,8 @@
+<div class="relative group">
+  <div class="bg-neutral-900 absolute w-full h-full opacity-0 group-hover:opacity-40 transition-opacity"></div>
+  <video #video [src]="src"></video>
+  <div (click)="toggle()" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full size-8 bg-white/20 backdrop-blur-sm group-hover:scale-110 transition-all grid items-center justify-center text-white group-hover:opacity-100" [ngClass]="isPlaying() ? 'opacity-0' : 'opacity-100'">
+    <ng-icon hlmIcon [name]="isPlaying() ? 'lucidePause' : 'lucidePlay'" size="sm" />
+  </div>
+  <input #timeline type="range" min="0" [max]="duration" step="0.01" (input)="seek(timeline?.valueAsNumber ?? 0)" name="timeline" class="absolute bottom-2 left-2 right-2 bg-blue-500 accent-accent transition-opacity opacity-0 group-hover:opacity-100">
+</div>

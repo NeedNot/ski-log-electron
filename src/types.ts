@@ -38,6 +38,8 @@ export type SkiSet = {
   date: string;
   locationId: string;
   type: SetType;
+  score: Number;
+  passes: SkiPass[];
 };
 
 export type SkiPass = {

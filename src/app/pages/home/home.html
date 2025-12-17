@@ -1,1 +1,85 @@
-<p>home works!</p>
+<div class="sm:w-4/5 m-5 sm:m-auto max-w-5xl sm:py-16">
+  <h1 class="text-3xl font-bold mb-4">Welcome back!</h1>
+  <div class="grid gap-4 grid-cols-3 mb-7">
+    <div hlmCard>
+      <div hlmCardHeader>
+        <p hlmCardDescription>Sets in the last 30 days</p>
+        <h3 hlmCardTitle class="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">30</h3>
+        <div hlmCardAction>
+          <span hlmBadge variant="outline">
+            <ng-icon hlm name="lucideTrendingUp" size="xs" />
+            +12
+          </span>
+        </div>
+      </div>
+    </div>
+    <div hlmCard>
+      <div hlmCardHeader>
+        <p hlmCardDescription>30 day best score</p>
+        <h3 hlmCardTitle class="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+          90 (3 @ 28' off)
+        </h3>
+        <div hlmCardAction>
+          <span hlmBadge variant="outline">
+            <ng-icon hlm name="lucideTrendingDown" size="xs" />
+            -2
+          </span>
+        </div>
+      </div>
+    </div>
+    <div hlmCard>
+      <div hlmCardHeader>
+        <p hlmCardDescription>Opener success rate</p>
+        <h3 hlmCardTitle class="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">80%</h3>
+        <div hlmCardAction>
+          <span hlmBadge variant="outline">
+            <ng-icon hlm name="lucideTrendingDown" size="xs" />
+            -2
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="grid gap-2 w-90 mb-7">
+    <span class="flex justify-between items-center">
+      <h2 class="text-lg font-medium">Recent sets</h2>
+      <a href="#" class="text-sm flex items-center gap-1">View all <ng-icon hlm size="sm" name="lucideArrowRight" />
+      </a>
+    </span>
+    @for (set of _recentSets; track set.id) {
+    <div hlmItem variant="outline" class="bg-card text-card-foreground shadow-sm">
+      <div hlmItemContent class="flex-row gap-4">
+        <div class="grid justify-center items-center bg-slate-100 rounded-md px-5 py-1">
+          <div class="text-xs font-bold text-slate-400">Dec</div>
+          <div class="font-bold text-xl text-slate-800">13</div>
+        </div>
+        <div class="grid">
+          <div class="flex gap-2">
+            <div class="font-bold">{{ set.locationId }}Kerman</div>
+            <div>2 @ 28' off</div>
+          </div>
+          <div class="flex text-neutral-500 gap-2 items-center">
+            <div hlmBadge variant="secondary" class="bg-blue-100 text-xs text-blue-700 px-1.5 py-0.5">
+              {{ set.type }}
+            </div>
+            <span>•</span>
+            <span>90 Points</span>
+            <span>•</span>
+            <span>{{ set.passes.length === 1 ? '1 Pass' : `${set.passes.length} Passes` }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+  <div class="grid gap-2 w-90 mb-7">
+
+    <h2 class="text-lg font-medium">Recent videos</h2>
+    <div class="w-full bg-red-50 flex gap-2">
+
+      @for (i of [0, 1, 2, 3, 4, 5]; track $index) {
+      <app-video-pass-card />
+      }
+    </div>
+  </div>
+</div>
