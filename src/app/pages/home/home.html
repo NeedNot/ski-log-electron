@@ -1,9 +1,10 @@
 <div class="sm:w-4/5 m-5 sm:m-auto max-w-5xl sm:py-16">
   <h1 class="text-3xl font-bold mb-4">Welcome back!</h1>
-  <div class="grid gap-4 grid-cols-3 mb-7">
+  <h2 class="text-lg font-medium mb-2">In the last 30 days</h2>
+  <div class="grid gap-2 grid-cols-2 lg:grid-cols-3 mb-7">
     <div hlmCard>
       <div hlmCardHeader>
-        <p hlmCardDescription>Sets in the last 30 days</p>
+        <p hlmCardDescription>Total sets</p>
         <h3 hlmCardTitle class="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">30</h3>
         <div hlmCardAction>
           <span hlmBadge variant="outline">
@@ -15,10 +16,8 @@
     </div>
     <div hlmCard>
       <div hlmCardHeader>
-        <p hlmCardDescription>30 day best score</p>
-        <h3 hlmCardTitle class="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-          90 (3 @ 28' off)
-        </h3>
+        <p hlmCardDescription>Best score</p>
+        <h3 hlmCardTitle class="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">90</h3>
         <div hlmCardAction>
           <span hlmBadge variant="outline">
             <ng-icon hlm name="lucideTrendingDown" size="xs" />
@@ -40,8 +39,8 @@
       </div>
     </div>
   </div>
-  <div class="flex w-full justify-between mb-7 gap-4">
-    <div hlmCard class="h-96 w-full">
+  <div class="flex w-full justify-between mb-7 gap-4 flex-wrap">
+    <div hlmCard class="h-96 min-w-sm flex-1">
       <div class="hlmCardContent">
         <div hlmEmpty>
           <div hlmEmptyHeader>
@@ -49,13 +48,11 @@
               <ng-icon name="lucideWind" />
             </div>
             <div hlmEmptyTitle>No recent sets</div>
-            <div hlmEmptyDescription>
-              There is no recent data to display from the last 30 days
-            </div>
+            <div hlmEmptyDescription>There is no recent data to display from the last 30 days</div>
           </div>
           <div hlmEmptyContent>
             <a href="/new-set">
-              <button hlmBtn><ng-icon hlmIcon name="lucidePlus"/> Log new set</button>
+              <button hlmBtn><ng-icon hlmIcon name="lucidePlus" /> Log new set</button>
             </a>
           </div>
         </div>
@@ -64,7 +61,8 @@
     <div class="grid h-fit gap-2 w-90 shrink-0">
       <span class="flex justify-between items-center">
         <h2 class="text-lg font-medium">Recent sets</h2>
-        <a href="#" class="text-sm flex items-center gap-1">View all <ng-icon hlm size="sm" name="lucideArrowRight" />
+        <a href="#" class="text-sm flex items-center gap-1"
+          >View all <ng-icon hlm size="sm" name="lucideArrowRight" />
         </a>
       </span>
       @for (set of _recentSets; track set.id) {
@@ -80,7 +78,11 @@
               <div>2 @ 28' off</div>
             </div>
             <div class="flex text-neutral-500 gap-2 items-center">
-              <div hlmBadge variant="secondary" class="bg-blue-100 text-xs text-blue-700 px-1.5 py-0.5">
+              <div
+                hlmBadge
+                variant="secondary"
+                class="bg-blue-100 text-xs text-blue-700 px-1.5 py-0.5"
+              >
                 {{ set.type }}
               </div>
               <span>•</span>
@@ -97,9 +99,10 @@
   <div class="grid gap-2 mb-7 w-full">
     <h2 class="text-lg font-medium">Recent videos</h2>
     <div class="w-full flex gap-2 overflow-x-scroll">
-
-      <app-video-pass-card [date]="_recentSets.at(0)?.date!" [pass]="_recentSets.at(0)!.passes.at(0)!" />
-
+      <app-video-pass-card
+        [date]="_recentSets.at(0)?.date!"
+        [pass]="_recentSets.at(0)!.passes.at(0)!"
+      />
     </div>
   </div>
 </div>
