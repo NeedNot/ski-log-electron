@@ -40,46 +40,66 @@
       </div>
     </div>
   </div>
-  <div class="grid gap-2 w-90 mb-7">
-    <span class="flex justify-between items-center">
-      <h2 class="text-lg font-medium">Recent sets</h2>
-      <a href="#" class="text-sm flex items-center gap-1">View all <ng-icon hlm size="sm" name="lucideArrowRight" />
-      </a>
-    </span>
-    @for (set of _recentSets; track set.id) {
-    <div hlmItem variant="outline" class="bg-card text-card-foreground shadow-sm">
-      <div hlmItemContent class="flex-row gap-4">
-        <div class="grid justify-center items-center bg-slate-100 rounded-md px-5 py-1">
-          <div class="text-xs font-bold text-slate-400">Dec</div>
-          <div class="font-bold text-xl text-slate-800">13</div>
-        </div>
-        <div class="grid">
-          <div class="flex gap-2">
-            <div class="font-bold">{{ set.locationId }}Kerman</div>
-            <div>2 @ 28' off</div>
-          </div>
-          <div class="flex text-neutral-500 gap-2 items-center">
-            <div hlmBadge variant="secondary" class="bg-blue-100 text-xs text-blue-700 px-1.5 py-0.5">
-              {{ set.type }}
+  <div class="flex w-full justify-between mb-7 gap-4">
+    <div hlmCard class="h-96 w-full">
+      <div class="hlmCardContent">
+        <div hlmEmpty>
+          <div hlmEmptyHeader>
+            <div hlmEmptyMedia variant="icon">
+              <ng-icon name="lucideWind" />
             </div>
-            <span>•</span>
-            <span>90 Points</span>
-            <span>•</span>
-            <span>{{ set.passes.length === 1 ? '1 Pass' : `${set.passes.length} Passes` }}</span>
+            <div hlmEmptyTitle>No recent sets</div>
+            <div hlmEmptyDescription>
+              There is no recent data to display from the last 30 days
+            </div>
+          </div>
+          <div hlmEmptyContent>
+            <a href="/new-set">
+              <button hlmBtn><ng-icon hlmIcon name="lucidePlus"/> Log new set</button>
+            </a>
           </div>
         </div>
       </div>
     </div>
-    }
-  </div>
-  <div class="grid gap-2 w-90 mb-7">
-
-    <h2 class="text-lg font-medium">Recent videos</h2>
-    <div class="w-full bg-red-50 flex gap-2">
-
-      @for (i of [0, 1, 2, 3, 4, 5]; track $index) {
-      <app-video-pass-card />
+    <div class="grid h-fit gap-2 w-90 shrink-0">
+      <span class="flex justify-between items-center">
+        <h2 class="text-lg font-medium">Recent sets</h2>
+        <a href="#" class="text-sm flex items-center gap-1">View all <ng-icon hlm size="sm" name="lucideArrowRight" />
+        </a>
+      </span>
+      @for (set of _recentSets; track set.id) {
+      <div hlmItem variant="outline" class="bg-card text-card-foreground shadow-sm">
+        <div hlmItemContent class="flex-row gap-4">
+          <div class="grid justify-center items-center bg-slate-100 rounded-md px-5 py-1">
+            <div class="text-xs font-bold text-slate-400">Dec</div>
+            <div class="font-bold text-xl text-slate-800">13</div>
+          </div>
+          <div class="grid">
+            <div class="flex gap-2">
+              <div class="font-bold">{{ set.locationId }}Kerman</div>
+              <div>2 @ 28' off</div>
+            </div>
+            <div class="flex text-neutral-500 gap-2 items-center">
+              <div hlmBadge variant="secondary" class="bg-blue-100 text-xs text-blue-700 px-1.5 py-0.5">
+                {{ set.type }}
+              </div>
+              <span>•</span>
+              <span>90 Points</span>
+              <span>•</span>
+              <span>{{ set.passes.length === 1 ? '1 Pass' : `${set.passes.length} Passes` }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
       }
+    </div>
+  </div>
+  <div class="grid gap-2 mb-7 w-full">
+    <h2 class="text-lg font-medium">Recent videos</h2>
+    <div class="w-full flex gap-2 overflow-x-scroll">
+
+      <app-video-pass-card [date]="_recentSets.at(0)?.date!" [pass]="_recentSets.at(0)!.passes.at(0)!" />
+
     </div>
   </div>
 </div>

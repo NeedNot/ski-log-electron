@@ -3,8 +3,11 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   lucideArrowRight,
   lucideCalendar,
+  lucidePlug,
+  lucidePlus,
   lucideTrendingDown,
   lucideTrendingUp,
+  lucideWind,
 } from '@ng-icons/lucide';
 import { HlmCardImports } from '@spartan-ng/helm/card';
 import { HlmIcon } from '@spartan-ng/helm/icon';
@@ -14,6 +17,8 @@ import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmItemImports } from '@spartan-ng/helm/item';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { VideoPassCard } from "../../components/video-pass-card/video-pass-card";
+import { HlmEmptyImports } from '@spartan-ng/helm/empty';
+import { HlmButton, HlmButtonImports } from "@spartan-ng/helm/button";
 
 @Component({
   selector: 'app-home',
@@ -25,10 +30,12 @@ import { VideoPassCard } from "../../components/video-pass-card/video-pass-card"
     BrnSelectImports,
     HlmBadgeImports,
     HlmItemImports,
-    VideoPassCard
+    VideoPassCard,
+    HlmEmptyImports,
+    HlmButtonImports
 ],
   providers: [
-    provideIcons({ lucideCalendar, lucideTrendingUp, lucideTrendingDown, lucideArrowRight }),
+    provideIcons({ lucideCalendar, lucideTrendingUp, lucideTrendingDown, lucideArrowRight, lucideWind, lucidePlus }),
   ],
   templateUrl: './home.html',
 })

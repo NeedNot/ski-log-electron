@@ -87,6 +87,9 @@
       ],
       "@spartan-ng/helm/field": [
         "./src/app/libs/ui/field/src/index.ts"
+      ],
+      "@spartan-ng/helm/empty": [
+        "./src/app/libs/ui/empty/src/index.ts"
       ]
     }
   },
