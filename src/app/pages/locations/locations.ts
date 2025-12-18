@@ -2,9 +2,7 @@ import { Component, signal } from '@angular/core';
 import { AbstractControl, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideMapPin, lucidePlus, lucideTrash2 } from '@ng-icons/lucide';
-import {
-  BrnAlertDialogImports,
-} from '@spartan-ng/brain/alert-dialog';
+import { BrnAlertDialogImports } from '@spartan-ng/brain/alert-dialog';
 import { HlmAlertDialogImports } from '@spartan-ng/helm/alert-dialog';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmIcon, HlmIconImports } from '@spartan-ng/helm/icon';
@@ -24,7 +22,7 @@ import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
     ReactiveFormsModule,
     HlmSeparatorImports,
     HlmAlertDialogImports,
-    BrnAlertDialogImports
+    BrnAlertDialogImports,
   ],
   templateUrl: './locations.html',
   providers: [provideIcons({ lucideMapPin, lucidePlus, lucideTrash2 })],
@@ -78,7 +76,4 @@ export class Locations {
     this._showDeleteConfirmationDialog.set('closed');
     this._locationToDelete = null;
   }
-  // todo fix the dialog
-  // 1. ctx.close() doesn't callback any close functions so you can't tell when it closes
-  // 2. dismissing outside the dialog doesn't callback any close functions
 }
