@@ -1,12 +1,16 @@
 {
   "name": "ski-log-electron",
   "version": "0.0.0",
+  "main": "dist-electron/main.js",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
+    "dev": "npm-run-all -p start:angular dev:electron",
+    "dev:electron": "npm run transpile:electron; cross-env NODE_ENV=development electron .",
+    "transpile:electron": "tsc -p src/electron/tsconfig.json",
+    "start:angular": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "dist:linux": "npm run transpile:electron && npm run build && electron-builder --linux --x64"
   },
   "prettier": {
     "printWidth": 100,
@@ -35,7 +39,9 @@
     "@spartan-ng/brain": "^0.0.1-alpha.580",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "npm-run-all": "^4.1.5",
     "rxjs": "~7.8.0",
+    "save-dev": "^0.0.1-security",
     "tailwind-merge": "^3.3.1",
     "tslib": "^2.3.0"
   },
@@ -45,6 +51,9 @@
     "@angular/compiler-cli": "^21.0.0",
     "@spartan-ng/cli": "^0.0.1-alpha.580",
     "@tailwindcss/postcss": "^4.1.12",
+    "cross-env": "^10.1.0",
+    "electron": "^39.2.7",
+    "electron-builder": "^26.0.12",
     "jsdom": "^27.1.0",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.12",
