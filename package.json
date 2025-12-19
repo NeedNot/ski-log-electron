@@ -10,6 +10,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "rebuild": "electron-rebuild -f -w better-sqlite3",
     "dist:linux": "npm run transpile:electron && npm run build && electron-builder --linux --x64"
   },
   "prettier": {
@@ -37,6 +38,8 @@
     "@ng-icons/core": ">=32.0.0 <34.0.0",
     "@ng-icons/lucide": ">=32.0.0 <34.0.0",
     "@spartan-ng/brain": "^0.0.1-alpha.580",
+    "@types/better-sqlite3": "^7.6.13",
+    "better-sqlite3": "^12.5.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "npm-run-all": "^4.1.5",
@@ -54,6 +57,7 @@
     "cross-env": "^10.1.0",
     "electron": "^39.2.7",
     "electron-builder": "^26.0.12",
+    "electron-rebuild": "^3.2.9",
     "jsdom": "^27.1.0",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.12",

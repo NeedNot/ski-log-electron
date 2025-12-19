@@ -49,3 +49,8 @@ export type SkiPass = {
   ropeLength: RopeLength;
   score: Number;
 };
+
+export type Location = {
+  id: number;
+  name: string;
+};
