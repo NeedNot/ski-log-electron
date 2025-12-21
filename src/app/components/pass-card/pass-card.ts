@@ -17,7 +17,6 @@ import { HlmFieldImports } from '@spartan-ng/helm/field';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
-import { NewSetStore } from '../../pages/new-set/new-set.store';
 import { BoatSpeedLabel, RopeLengthColors, RopeLengthLabel } from '../../../constants';
 import { NgClass } from '@angular/common';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -52,8 +51,6 @@ export class PassCard implements OnInit {
   @Output() delete = new EventEmitter<void>();
   @Output() moveUp = new EventEmitter<void>();
   @Output() moveDown = new EventEmitter<void>();
-
-  store = inject(NewSetStore);
 
   protected readonly boatSpeeds = Object.entries(BoatSpeedLabel).reverse();
   protected ropeColor!: WritableSignal<string>;

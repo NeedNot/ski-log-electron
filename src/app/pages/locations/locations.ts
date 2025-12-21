@@ -35,10 +35,10 @@ export class Locations implements OnInit {
   private _locationToDelete: number | null = null;
   protected readonly _showDeleteConfirmationDialog = signal<'open' | 'closed'>('closed');
 
-  protected locations: Signal<Location[]>;
+  protected readonly locations: Signal<Location[]>;
   protected newLocationControl!: FormControl<string>;
 
-  constructor(private locationsService: LocationsService, private ngZone: NgZone) {
+  constructor(private locationsService: LocationsService) {
     this.locations = toSignal(this.locationsService.locations$, { initialValue: [] });
   }
 
@@ -75,6 +75,7 @@ export class Locations implements OnInit {
   confirmDeleteLocation() {
     this.locationsService.deleteLocation(this._locationToDelete as number);
     this._showDeleteConfirmationDialog.set('closed');
+    this._locationToDelete = null;
   }
 
   closeDialog() {

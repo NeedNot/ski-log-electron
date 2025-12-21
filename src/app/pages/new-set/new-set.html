@@ -66,7 +66,7 @@
           </div>
 
           <div class="mt-7" hlmFieldGroup>
-            <fieldset hlmFieldSet>
+            <fieldset hlmFieldSet formArrayName="passes">
               <div class="flex justify-between">
                 <legend hlmFieldLegend>Passes</legend>
                 <button
@@ -80,19 +80,17 @@
                   <ng-icon hlm size="sm" name="lucidePlus" /> Add pass
                 </button>
               </div>
-              <div formArrayName="passes">
-                @for (pass of passForms.controls; track $index;) {
-                <app-pass-card
-                  [index]="$index"
-                  [group]="pass"
-                  [isFirst]="$index === 0"
-                  [isLast]="$index === passForms.controls.length - 1"
-                  (delete)="deletePass($index)"
-                  (moveUp)="movePassUp($index)"
-                  (moveDown)="movePassDown($index)"
-                />
-                }
-              </div>
+              @for (pass of passForms.controls; track $index;) {
+              <app-pass-card
+                [index]="$index"
+                [group]="pass"
+                [isFirst]="$index === 0"
+                [isLast]="$index === passForms.controls.length - 1"
+                (delete)="deletePass($index)"
+                (moveUp)="movePassUp($index)"
+                (moveDown)="movePassDown($index)"
+              />
+              }
               <div hlmField orientation="horizontal" class="justify-end">
                 <button hlmBtn (click)="clearPasses()" type="button" variant="outline">
                   Clear
