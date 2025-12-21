@@ -2,7 +2,7 @@
   <section hlmCard>
     <div hlmCardContent>
       <div class="space-y-7">
-        <form>
+        <form [formGroup]="formGroup" (ngSubmit)="submit()">
           <div hlmFieldGroup>
             <fieldset hlmFieldSet>
               <legend hlmFieldLegend>Set details</legend>
@@ -11,16 +11,27 @@
                 <div class="flex gap-x-4 gap-y-7 flex-wrap">
                   <div hlmField class="w-fit">
                     <label hlmFieldLabel for="field-date">Date</label>
-                    <input hlmInput type="date" id="field-date" value="today" />
+                    <input
+                      hlmInput
+                      type="date"
+                      id="field-date"
+                      [max]="today"
+                      formControlName="date"
+                      required
+                    />
                   </div>
                   <div hlmField class="w-fit">
                     <label hlmFieldLabel for="field-location">Location</label>
-                    <brn-select class="inline-block" placeholder="Select an option">
+                    <brn-select
+                      formControlName="location"
+                      class="inline-block"
+                      placeholder="Select an option"
+                    >
                       <hlm-select-trigger class="w-56">
                         <hlm-select-value />
                       </hlm-select-trigger>
                       <hlm-select-content>
-                        @for (location of locations; track location.id) {
+                        @for (location of locations(); track location.id) {
                         <hlm-option value="{{ location.id }}">{{ location.name }}</hlm-option>
                         }
                       </hlm-select-content>
@@ -28,7 +39,7 @@
                   </div>
                   <div hlmField class="w-fit">
                     <label hlmFieldLabel for="field-setting">Setting</label>
-                    <brn-select class="inline-block" value="practice">
+                    <brn-select formControlName="setting" class="inline-block" value="practice">
                       <hlm-select-trigger class="w-36">
                         <hlm-select-value />
                       </hlm-select-trigger>
@@ -46,16 +57,15 @@
                     class="resize-none"
                     id="field-comments"
                     placeholder="Try anything new?"
+                    formControlName="comments"
                   ></textarea>
                 </div>
               </div>
             </fieldset>
             <hlm-field-separator />
           </div>
-        </form>
 
-        <form>
-          <div hlmFieldGroup>
+          <div class="mt-7" hlmFieldGroup>
             <fieldset hlmFieldSet>
               <div class="flex justify-between">
                 <legend hlmFieldLegend>Passes</legend>
@@ -70,19 +80,24 @@
                   <ng-icon hlm size="sm" name="lucidePlus" /> Add pass
                 </button>
               </div>
-              @for (pass of store.passes(); track pass.id; let i = $index) {
-              <app-pass-card
-                [index]="i"
-                [isFirst]="i === 0"
-                [isLast]="i === store.passes().length - 1"
-                [passId]="pass.id"
-              />
-              }
+              <div formArrayName="passes">
+                @for (pass of passForms.controls; track $index;) {
+                <app-pass-card
+                  [index]="$index"
+                  [group]="pass"
+                  [isFirst]="$index === 0"
+                  [isLast]="$index === passForms.controls.length - 1"
+                  (delete)="deletePass($index)"
+                  (moveUp)="movePassUp($index)"
+                  (moveDown)="movePassDown($index)"
+                />
+                }
+              </div>
               <div hlmField orientation="horizontal" class="justify-end">
                 <button hlmBtn (click)="clearPasses()" type="button" variant="outline">
                   Clear
                 </button>
-                <button hlmBtn type="button">Submit</button>
+                <button [disabled]="!formGroup.valid" type="submit" hlmBtn>Submit</button>
               </div>
             </fieldset>
           </div>

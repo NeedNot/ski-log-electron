@@ -19,3 +19,17 @@ export function makeid(length: number) {
   }
   return result;
 }
+
+export function moveUp(arr: any[], i: number) {
+  if (i <= 0 || i >= arr.length) return arr;
+
+  arr.splice(i - 1, 0, arr.splice(i, 1)[0]);
+  return arr;
+}
+
+export function moveDown(arr: any[], i: number) {
+  if (i < 0 || i >= arr.length - 1) return arr;
+
+  arr.splice(i + 1, 0, arr.splice(i, 1)[0]);
+  return arr;
+}

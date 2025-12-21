@@ -1,4 +1,4 @@
-import { Component, computed, inject, Input } from '@angular/core';
+import { Component, computed, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmSelectImports } from '@spartan-ng/helm/select';
 import { HlmIcon } from '@spartan-ng/helm/icon';
@@ -13,6 +13,7 @@ import { BoatSpeedLabel, RopeLengthColors, RopeLengthLabel } from '../../../cons
 import { NgClass } from '@angular/common';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideArrowDown, lucideArrowUp, lucidePlus, lucideTrash2 } from '@ng-icons/lucide';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-pass-card',
@@ -27,48 +28,26 @@ import { lucideArrowDown, lucideArrowUp, lucidePlus, lucideTrash2 } from '@ng-ic
     HlmIcon,
     NgIcon,
     NgClass,
+    ReactiveFormsModule,
   ],
   providers: [provideIcons({ lucidePlus, lucideTrash2, lucideArrowUp, lucideArrowDown })],
   templateUrl: './pass-card.html',
 })
 export class PassCard {
+  @Input({ required: true }) group!: FormGroup;
   @Input() index: number = 0;
   @Input() isFirst: boolean = false;
   @Input() isLast: boolean = false;
-  @Input() passId!: string;
+
+  @Output() delete = new EventEmitter<void>();
+  @Output() moveUp = new EventEmitter<void>();
+  @Output() moveDown = new EventEmitter<void>();
 
   store = inject(NewSetStore);
-  pass = computed(() => this.store.passById(this.passId));
 
-  protected readonly boatSpeeds = Object.entries(BoatSpeedLabel);
+  protected readonly boatSpeeds = Object.entries(BoatSpeedLabel).reverse();
   protected readonly ropeLengths = Object.entries(RopeLengthLabel);
-  protected readonly ropeColor = computed(
-    () => RopeLengthColors[this.pass()?.ropeLength ?? RopeLength.L_0_OFF]
-  );
-
-  setBoatSpeed(value: BoatSpeed) {
-    this.store.updatePass(this.passId, { speed: value });
-  }
-
-  setRopeLength(value: RopeLength) {
-    this.store.updatePass(this.passId, { ropeLength: value });
-  }
-
-  setPoints(value: number) {
-    this.store.updatePass(this.passId, { score: value });
-  }
-
-  deletePass() {
-    this.store.deletePass(this.passId);
-  }
-
-  moveUp() {
-    this.store.movePassUp(this.passId);
-  }
-
-  moveDown() {
-    this.store.movePassDown(this.passId);
-  }
+  protected readonly ropeColor = computed(() => RopeLengthColors[RopeLength.L_0_OFF]);
 
   onDragOver(event: DragEvent) {
     event.preventDefault();
