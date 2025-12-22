@@ -5,13 +5,20 @@ export let db: Database.Database;
 export function initDB(dbPath: string) {
   db = new Database(dbPath);
 
-  db.prepare(
-    `
-    CREATE TABLE IF NOT EXISTS locations (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL COLLATE NOCASE UNIQUE
-    );
+  db.exec(`
+  CREATE TABLE IF NOT EXISTS locations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL COLLATE NOCASE UNIQUE
+  );
 
-  `
-  ).run();
+  CREATE TABLE IF NOT EXISTS sets (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    location_id INTEGER NOT NULL,
+    date TEXT NOT NULL,
+    setting TEXT NOT NULL,
+    comments TEXT,
+    score FLOAT NOT NULL,
+    FOREIGN KEY (location_id) REFERENCES locations (id)
+  );
+`);
 }

@@ -10,7 +10,7 @@ import { HlmTextarea } from '@spartan-ng/helm/textarea';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucidePlus, lucideVideo } from '@ng-icons/lucide';
-import { BoatSpeed, Location, RopeLength } from '../../../types';
+import { Location } from '../../../types';
 import { PassCard } from '../../components/pass-card/pass-card';
 import { getRopeByIndex, getRopeIndex, moveDown, moveUp } from '../../../utils';
 import { LocationsService } from '../../services/locations.service';
@@ -25,6 +25,8 @@ import {
   Validators,
   FormArray,
 } from '@angular/forms';
+import { SetsService } from '../../services/sets.service';
+import { BoatSpeed, RopeLength } from '../../../types';
 
 @Component({
   selector: 'app-new-set',
@@ -62,7 +64,7 @@ export class NewSet implements OnInit {
   });
   protected readonly locations: Signal<Location[]>;
 
-  constructor(private locationsService: LocationsService) {
+  constructor(private locationsService: LocationsService, private setsService: SetsService) {
     this.locations = toSignal(
       this.locationsService.locations$.pipe(
         map((locs) => locs.sort((a, b) => a.name.localeCompare(b.name)))
@@ -127,10 +129,16 @@ export class NewSet implements OnInit {
   }
 
   submit() {
-    // validate set
-    // validate passes
-    // save set
-    console.log(this.formGroup);
+    const formValue = this.formGroup.value;
+    this.setsService.addSet({
+      locationId: Number(formValue.location!),
+      date: formValue.date!,
+      setting: formValue.setting!,
+      comments: formValue.comments!,
+      passes: this.passForms.value,
+    });
+    this.clearPasses();
+    this.formGroup.reset();
   }
 }
 

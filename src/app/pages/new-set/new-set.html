@@ -32,7 +32,7 @@
                       </hlm-select-trigger>
                       <hlm-select-content>
                         @for (location of locations(); track location.id) {
-                        <hlm-option value="{{ location.id }}">{{ location.name }}</hlm-option>
+                        <hlm-option [value]="location.id">{{ location.name }}</hlm-option>
                         }
                       </hlm-select-content>
                     </brn-select>

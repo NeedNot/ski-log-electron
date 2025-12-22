@@ -1,7 +1,7 @@
 import { db } from '..';
 
 export function getLocations() {
-  return db.prepare<Location[]>('SELECT * FROM locations ORDER BY id DESC').all();
+  return db.prepare('SELECT * FROM locations ORDER BY id DESC').all();
 }
 
 export function addLocation(name: string) {

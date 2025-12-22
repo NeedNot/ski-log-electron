@@ -1,5 +1,5 @@
 import { ipcMain } from 'electron';
-import * as service from '../features/locations/service';
+import * as service from '../features/locations/locations.service';
 
 export function registerLocationsIpc() {
   ipcMain.handle('locations:list', () => service.listLocations());

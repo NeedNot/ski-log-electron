@@ -1,9 +1,14 @@
-import { RopeLength } from './types';
+import { BoatSpeed, RopeLength } from './types';
 
 const ropeLengths = Object.values(RopeLength);
+const boatSpeeds = Object.values(BoatSpeed);
 
 export function getRopeIndex(rope: RopeLength) {
   return ropeLengths.findIndex((v) => v === rope);
+}
+
+export function getBoatSpeedIndex(boatSpeed: BoatSpeed) {
+  return boatSpeeds.findIndex((v) => v === boatSpeed);
 }
 
 export function getRopeByIndex(index: number) {
