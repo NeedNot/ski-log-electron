@@ -138,11 +138,12 @@ export class NewSet implements OnInit {
       comments: p.comments ?? '',
     }));
 
+    const dateSplit = formValue.date!.split('-').map(Number);
     this.setsService
       .addSet({
         locationId: Number(formValue.location!),
-        date: formValue.date!,
-        setting: formValue.setting!,
+        date: new Date(dateSplit[0], dateSplit[1] - 1, dateSplit[2]),
+        isTournament: formValue.setting!.toLowerCase() === 'tournament',
         comments: formValue.comments!,
         passes,
       })

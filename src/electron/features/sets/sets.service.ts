@@ -2,9 +2,15 @@ import * as repo from '../../db/repositories/sets.repo';
 import { NewSet } from './sets.types';
 
 export function listSets(params?: { start: string; end: string }) {
-  return repo.getSets(params);
+  return repo.getSets(params).map((set) => ({
+    ...set,
+    locationId: set.location_id,
+    isTournament: set.is_tournament === 1,
+    passes: JSON.parse(set.passes),
+    date: new Date(set.date),
+  }));
 }
 
-export function createSet({ locationId, date, setting, comments, score, passes }: NewSet) {
-  return repo.addSet(locationId, date, setting, comments, score, passes);
+export function createSet({ locationId, date, isTournament, comments, score, passes }: NewSet) {
+  return repo.addSet(locationId, date, isTournament ? 1 : 0, comments, score, passes);
 }

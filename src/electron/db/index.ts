@@ -15,7 +15,7 @@ export function initDB(dbPath: string) {
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     location_id INTEGER NOT NULL,
     date TEXT NOT NULL,
-    setting TEXT NOT NULL,
+    is_tournament INTEGER NOT NULL,
     comments TEXT,
     score FLOAT NOT NULL,
     passes TEXT NOT NULL,

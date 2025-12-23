@@ -28,22 +28,16 @@ export enum RopeLength {
   L_45_OFF = 'L_45_OFF',
 }
 
-export enum SetSetting {
-  PRACTICE = 'Practice',
-  TOURNAMENT = 'Tournament',
-}
-
 export type SkiSet = {
-  id: string;
-  date: string;
+  id: number;
+  date: Date;
   locationId: number;
-  setting: SetSetting;
+  isTournament: boolean;
   score: number;
   passes: SkiPass[];
 };
 
 export type SkiPass = {
-  id: number;
   boatSpeed: BoatSpeed;
   ropeLength: RopeLength;
   points: number;

@@ -45,9 +45,10 @@
       </div>
     </div>
   </div>
-  <div class="flex w-full justify-between mb-7 gap-4 flex-wrap">
-    <div hlmCard class="h-96 min-w-sm flex-1">
-      <div class="hlmCardContent">
+  <div class="flex w-full justify-between mb-7 gap-4 flex-wrap items-stretch">
+    <div hlmCard class="min-h-96 min-w-sm flex-1">
+      <div hlmCardContent>
+        @if (recentSets().length === 0) {
         <div hlmEmpty>
           <div hlmEmptyHeader>
             <div hlmEmptyMedia variant="icon">
@@ -62,26 +63,29 @@
             </a>
           </div>
         </div>
+        }
       </div>
     </div>
+    @if (recentSets().length > 0) {
     <div class="grid h-fit gap-2 w-90 shrink-0">
       <span class="flex justify-between items-center">
         <h2 class="text-lg font-medium">Recent sets</h2>
+
         <a href="#" class="text-sm flex items-center gap-1"
           >View all <ng-icon hlm size="sm" name="lucideArrowRight" />
         </a>
       </span>
-      @for (set of _recentSets; track set.id) {
+      @for (set of recentSets(); track set.id) {
       <div hlmItem variant="outline" class="bg-card text-card-foreground shadow-sm">
         <div hlmItemContent class="flex-row gap-4">
           <div class="grid justify-center items-center bg-slate-100 rounded-md px-5 py-1">
-            <div class="text-xs font-bold text-slate-400">Dec</div>
-            <div class="font-bold text-xl text-slate-800">13</div>
+            <div class="text-xs font-bold text-slate-400">{{ set.month }}</div>
+            <div class="font-bold text-xl text-slate-800">{{ set.day }}</div>
           </div>
           <div class="grid">
             <div class="flex gap-2">
-              <div class="font-bold">{{ set.locationId }}Kerman</div>
-              <div>2 @ 28' off</div>
+              <div class="font-bold">{{ set.location }}</div>
+              <div>{{ set.title }}</div>
             </div>
             <div class="flex text-neutral-500 gap-2 items-center">
               <div
@@ -89,26 +93,28 @@
                 variant="secondary"
                 class="bg-blue-100 text-xs text-blue-700 px-1.5 py-0.5"
               >
-                {{ set.setting }}
+                {{ set.isTournament ? 'Tournament' : 'Practice' }}
               </div>
               <span>•</span>
-              <span>90 Points</span>
+              <span>{{ set.score === 1 ? '1 Point' : `${set.score} Points` }}</span>
               <span>•</span>
-              <span>{{ set.passes.length === 1 ? '1 Pass' : `${set.passes.length} Passes` }}</span>
+              <span>{{ set.passes === 1 ? '1 Pass' : `${set.passes} Passes` }}</span>
             </div>
           </div>
         </div>
       </div>
       }
     </div>
+    }
   </div>
   <div class="grid gap-2 mb-7 w-full">
     <h2 class="text-lg font-medium">Recent videos</h2>
     <div class="w-full flex gap-2 overflow-x-scroll">
-      <app-video-pass-card
-        [date]="_recentSets.at(0)?.date!"
-        [pass]="_recentSets.at(0)!.passes.at(0)!"
-      />
+      <!-- todo replace badges with n @ length off -->
+      <!-- <app-video-pass-card
+        [date]="monthSets().at(0)?.date!"
+        [pass]="monthSets().at(0)?.passes?.at(0)!"
+      /> -->
     </div>
   </div>
 </div>

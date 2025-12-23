@@ -1,7 +1,7 @@
 export type NewSet = {
   locationId: number;
   date: string;
-  setting: string;
+  isTournament: boolean;
   comments: string;
   score: number;
   passes: string;
