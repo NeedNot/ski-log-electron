@@ -8,7 +8,7 @@ contextBridge.exposeInMainWorld('api', {
     remove: (id: number) => ipcRenderer.invoke('locations:remove', id),
   },
   sets: {
-    list: () => ipcRenderer.invoke('sets:list'),
+    list: (params: { start: string; end: string }) => ipcRenderer.invoke('sets:list', params),
     add: (set: NewSet) => ipcRenderer.invoke('sets:add', set),
   },
 });

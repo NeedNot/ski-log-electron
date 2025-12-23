@@ -6,38 +6,42 @@
       <div hlmCardHeader>
         <p hlmCardDescription>Total sets</p>
         <h3 hlmCardTitle class="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-          {{ numberOfSets() }}
+          {{ monthSets().length }}
         </h3>
-        <div hlmCardAction>
+        <!-- <div hlmCardAction>
           <span hlmBadge variant="outline">
             <ng-icon hlm name="lucideTrendingUp" size="xs" />
             +12
           </span>
-        </div>
+        </div> -->
       </div>
     </div>
     <div hlmCard>
       <div hlmCardHeader>
         <p hlmCardDescription>Best score</p>
-        <h3 hlmCardTitle class="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">90</h3>
-        <div hlmCardAction>
+        <h3 hlmCardTitle class="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+          {{ monthBestScore() }}
+        </h3>
+        <!-- <div hlmCardAction>
           <span hlmBadge variant="outline">
             <ng-icon hlm name="lucideTrendingDown" size="xs" />
             -2
           </span>
-        </div>
+        </div> -->
       </div>
     </div>
     <div hlmCard>
       <div hlmCardHeader>
-        <p hlmCardDescription>Opener success rate</p>
-        <h3 hlmCardTitle class="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">80%</h3>
-        <div hlmCardAction>
+        <p hlmCardDescription>Opener rate</p>
+        <h3 hlmCardTitle class="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+          {{ openerRate() }}%
+        </h3>
+        <!-- <div hlmCardAction>
           <span hlmBadge variant="outline">
             <ng-icon hlm name="lucideTrendingDown" size="xs" />
             -2
           </span>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

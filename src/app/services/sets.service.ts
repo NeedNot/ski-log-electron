@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { getBoatSpeedIndex, getRopeIndex } from '../../utils';
-import { BoatSpeed, RopeLength, SetSetting } from '../../types';
+import { BoatSpeed, RopeLength, SetSetting, SkiPass } from '../../types';
 import { BehaviorSubject } from 'rxjs';
 import { SkiSet } from '../../types';
 
@@ -8,15 +8,15 @@ import { SkiSet } from '../../types';
   providedIn: 'root',
 })
 export class SetsService {
-  private setsSubject = new BehaviorSubject<SkiSet[]>([]);
-  sets$ = this.setsSubject.asObservable();
+  private monthSetsSubject = new BehaviorSubject<SkiSet[]>([]);
+  monthSets$ = this.monthSetsSubject.asObservable();
 
   async addSet(set: {
     locationId: number;
     date: string;
     setting: string;
     comments: string;
-    passes: { ropeLength: string; boatSpeed: string; comments: string; points: number }[];
+    passes: Omit<SkiPass, 'id'>[];
   }) {
     // todo do tournament scoring
 
@@ -27,21 +27,32 @@ export class SetsService {
       const difficulty = speed + ropeLength; //starts at 0 so it's actually the previous pass difficulty
       maxScore = Math.max(6 * difficulty + pass.points, maxScore); //previous pass + current pass points
     }
-    const id = await (window as any).api.sets.add({ ...set, score: maxScore });
-    this.setsSubject.next([
+    const id = await (window as any).api.sets.add({
+      ...set,
+      score: maxScore,
+      passes: JSON.stringify(set.passes),
+    });
+    this.monthSetsSubject.next([
       {
         ...set,
         id,
         score: maxScore,
         setting: SetSetting[set.setting as keyof typeof SetSetting],
-        passes: [],
+        passes: set.passes.map((p, i) => ({ ...p, id: i })),
       },
-      ...this.setsSubject.value,
+      ...this.monthSetsSubject.value,
     ]);
   }
 
-  async loadSets() {
-    const sets = await (window as any).api.sets.list();
-    this.setsSubject.next(sets);
+  async loadMonthSets() {
+    const end = new Date();
+    const start = new Date();
+    start.setDate(end.getDate() - 30);
+
+    const sets = (await (window as any).api.sets.list({
+      start: start.toISOString().split('T')[0],
+      end: end.toISOString().split('T')[0],
+    })) as any[];
+    this.monthSetsSubject.next(sets.map((set) => ({ ...set, passes: JSON.parse(set.passes) })));
   }
 }

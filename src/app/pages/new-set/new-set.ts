@@ -10,7 +10,7 @@ import { HlmTextarea } from '@spartan-ng/helm/textarea';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucidePlus, lucideVideo } from '@ng-icons/lucide';
-import { Location } from '../../../types';
+import { Location, SkiPass } from '../../../types';
 import { PassCard } from '../../components/pass-card/pass-card';
 import { getRopeByIndex, getRopeIndex, moveDown, moveUp } from '../../../utils';
 import { LocationsService } from '../../services/locations.service';
@@ -130,15 +130,26 @@ export class NewSet implements OnInit {
 
   submit() {
     const formValue = this.formGroup.value;
-    this.setsService.addSet({
-      locationId: Number(formValue.location!),
-      date: formValue.date!,
-      setting: formValue.setting!,
-      comments: formValue.comments!,
-      passes: this.passForms.value,
-    });
-    this.clearPasses();
-    this.formGroup.reset();
+
+    const passes: Omit<SkiPass, 'id'>[] = this.passForms.value.map((p: any) => ({
+      boatSpeed: p.boatSpeed,
+      ropeLength: p.ropeLength,
+      points: Number(p.points),
+      comments: p.comments ?? '',
+    }));
+
+    this.setsService
+      .addSet({
+        locationId: Number(formValue.location!),
+        date: formValue.date!,
+        setting: formValue.setting!,
+        comments: formValue.comments!,
+        passes,
+      })
+      .then(() => {
+        this.clearPasses();
+        this.formGroup.reset();
+      });
   }
 }
 

@@ -38,16 +38,15 @@ export type SkiSet = {
   date: string;
   locationId: number;
   setting: SetSetting;
-  score: Number;
+  score: number;
   passes: SkiPass[];
 };
 
 export type SkiPass = {
-  id: string;
-  setId: string;
-  speed: BoatSpeed;
+  id: number;
+  boatSpeed: BoatSpeed;
   ropeLength: RopeLength;
-  score: Number;
+  points: number;
 };
 
 export type Location = {

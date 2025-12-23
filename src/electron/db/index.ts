@@ -18,6 +18,7 @@ export function initDB(dbPath: string) {
     setting TEXT NOT NULL,
     comments TEXT,
     score FLOAT NOT NULL,
+    passes TEXT NOT NULL,
     FOREIGN KEY (location_id) REFERENCES locations (id)
   );
 `);

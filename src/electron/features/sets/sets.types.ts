@@ -4,4 +4,5 @@ export type NewSet = {
   setting: string;
   comments: string;
   score: number;
+  passes: string;
 };

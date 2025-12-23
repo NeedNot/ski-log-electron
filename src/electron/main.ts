@@ -5,7 +5,7 @@ import { initDB } from './db';
 import { registerIpc } from './ipc';
 
 app.on('ready', () => {
-  const dbPath = path.join(app.getPath('appData'), 'database.db');
+  const dbPath = path.join(app.getPath('userData'), 'database.db');
   initDB(dbPath);
   registerIpc();
 
