@@ -7,7 +7,7 @@
           <ul hlmSidebarMenu>
             @for(item of _items; track item.title){
             <li hlmSidebarMenuItem>
-              <a href="{{ item.url }}" hlmSidebarMenuButton>
+              <a [href]="item.url" hlmSidebarMenuButton>
                 <ng-icon hlm [name]="item.icon" />
                 <span>{{ item.title }}</span>
               </a>

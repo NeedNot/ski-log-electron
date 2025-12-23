@@ -1,14 +1,16 @@
 <div class="bg-card text-card-foreground rounded-md shadow w-56 overflow-hidden grid">
-  <app-video-player src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" />
+  <app-video-player
+    src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+  />
   <div class="p-2 grid gap-1.5">
-      <div class="flex items-center gap-2">
-        <ng-icon hlmIcon name="lucideCalendar" size="sm" class="text-blue-500" />
-        <div class="text-sm text-muted-foreground">{{day}}</div>
-      </div>
+    <div class="flex items-center gap-2">
+      <ng-icon hlmIcon name="lucideCalendar" size="sm" class="text-blue-500" />
+      <div class="text-sm text-muted-foreground">{{ day }}</div>
+    </div>
     <div class="gap-1 flex">
-      <div hlmBadge>{{speed}}</div>
-      <div hlmBadge [class]="ropeColor">{{ropeLength}}</div>
-      <div hlmBadge class="text-red-500 bg-red-200">{{pass.score}} Points</div>
+      <div hlmBadge>{{ speed }}</div>
+      <div hlmBadge [class]="ropeColor">{{ ropeLength }}</div>
+      <div hlmBadge class="text-red-500 bg-red-200">{{ pass.points }} Points</div>
     </div>
   </div>
 </div>

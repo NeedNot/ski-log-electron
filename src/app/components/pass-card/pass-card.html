@@ -1,3 +1,4 @@
+<!-- todo have a collaped version -->
 <div hlmCard class="relative overflow-clip rounded-md">
   <div
     [ngClass]="ropeColor()"
@@ -8,7 +9,7 @@
       class="absolute flex flex-col top-20 opacity-0 hover:opacity-100 transition-opacity gap-4 grid-rows-3 items-center justify-center w-8"
     >
       <button
-        class="{{ isFirst && 'invisible' }}"
+        [class]="isFirst && 'invisible'"
         (click)="moveUp.emit()"
         title="Move up"
         hlmBtn
@@ -29,7 +30,7 @@
         <ng-icon hlm size="sm" name="lucideTrash2" />
       </button>
       <button
-        class="{{ isLast && 'invisible' }}"
+        [class]="isLast && 'invisible'"
         (click)="moveDown.emit()"
         title="Move down"
         hlmBtn
