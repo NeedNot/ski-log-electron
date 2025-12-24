@@ -23,7 +23,7 @@ import { BoatSpeedLabel, RopeLengthColors, RopeLengthLabel } from '../../../cons
   ],
 })
 export class VideoPassCard {
-  @Input() date!: string;
+  @Input() date!: Date;
   @Input() pass!: SkiPass;
 
   get day() {

@@ -38,6 +38,7 @@ import { ScoreChart } from '../../components/charts/score-chart/score-chart';
     HlmEmptyImports,
     HlmButtonImports,
     ScoreChart,
+    VideoPassCard,
   ],
   providers: [
     provideIcons({
@@ -85,22 +86,21 @@ export class Home implements OnInit {
         map(([sets, locations]) => {
           const locationsMap = new Map(locations.map((loc) => [loc.id, loc.name]));
           return sets.slice(0, 4).map((set) => {
-            let maxScore = 0;
             let title = '';
-            set.passes.forEach((pass) => {
+            for (const pass of set.passes) {
               const s = calculatePassScore(pass, set.isTournament);
-              if (s > maxScore) {
-                maxScore = s;
+              if (s === set.score) {
                 title = calculatePassTitle(pass);
+                break;
               }
-            });
+            }
             return {
               id: set.id,
               title,
               location: locationsMap.get(set.locationId)!,
               month: new Date(set.date).toLocaleDateString('en-US', { month: 'short' }),
               day: new Date(set.date).toLocaleDateString('en-US', { day: 'numeric' }),
-              score: maxScore,
+              score: set.score,
               isTournament: set.isTournament,
               passes: set.passes.length,
             };
