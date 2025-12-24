@@ -47,7 +47,7 @@
   </div>
   <div class="flex w-full justify-between mb-7 gap-4 flex-wrap items-stretch">
     <div hlmCard class="min-h-96 min-w-sm flex-1">
-      <div hlmCardContent>
+      <div hlmCardContent class="h-full">
         @if (recentSets().length === 0) {
         <div hlmEmpty>
           <div hlmEmptyHeader>
@@ -63,6 +63,8 @@
             </a>
           </div>
         </div>
+        } @else {
+        <app-score-chart [sets]="monthSets()" />
         }
       </div>
     </div>

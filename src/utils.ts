@@ -42,6 +42,7 @@ export function moveDown(arr: any[], i: number) {
 
 export function calculatePassScore(pass: SkiPass, isTournament: boolean) {
   // todo calculate tournament score
+  if (pass.points === 0) return 0;
   const ropeLength = getRopeIndex(RopeLength[pass.ropeLength as keyof typeof RopeLength]);
   const speed = getBoatSpeedIndex(BoatSpeed[pass.boatSpeed as keyof typeof BoatSpeed]);
   const difficulty = speed + ropeLength; //starts at 0 so it's actually the previous pass difficulty

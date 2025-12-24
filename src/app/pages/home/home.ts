@@ -23,6 +23,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { calculatePassScore, calculatePassTitle } from '../../../utils';
 import { LocationsService } from '../../services/locations.service';
 import { combineLatest, map } from 'rxjs';
+import { ScoreChart } from '../../components/charts/score-chart/score-chart';
 
 @Component({
   selector: 'app-home',
@@ -36,6 +37,7 @@ import { combineLatest, map } from 'rxjs';
     HlmItemImports,
     HlmEmptyImports,
     HlmButtonImports,
+    ScoreChart,
   ],
   providers: [
     provideIcons({
