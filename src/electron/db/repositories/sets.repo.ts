@@ -15,12 +15,6 @@ export function addSet(
     .run(date, locationId, isTournament, comments, score, passes).lastInsertRowid;
 }
 
-export function getSets(params?: { start: string; end: string }): any[] {
-  if (params?.start && params.end) {
-    return db
-      .prepare(`SELECT * FROM sets WHERE date BETWEEN ? AND ? ORDER BY date DESC, id DESC`)
-      .all(params.start, params.end);
-  } else {
-    return db.prepare(`SELECT * FROM sets ORDER BY date DESC, id DESC`).all();
-  }
+export function getSets(): any[] {
+  return db.prepare(`SELECT * FROM sets ORDER BY date DESC, id DESC`).all();
 }

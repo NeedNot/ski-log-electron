@@ -30,6 +30,7 @@ export enum RopeLength {
 
 export type SkiSet = {
   id: number;
+  bestPass: string;
   date: Date;
   locationId: number;
   isTournament: boolean;

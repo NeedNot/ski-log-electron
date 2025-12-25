@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { calculatePassScore } from '../../utils';
+import { calculatePassScore, calculatePassTitle } from '../../utils';
 import { SkiPass } from '../../types';
 import { BehaviorSubject } from 'rxjs';
 import { SkiSet } from '../../types';
@@ -8,8 +8,8 @@ import { SkiSet } from '../../types';
   providedIn: 'root',
 })
 export class SetsService {
-  private monthSetsSubject = new BehaviorSubject<SkiSet[]>([]);
-  monthSets$ = this.monthSetsSubject.asObservable();
+  private setsSubject = new BehaviorSubject<SkiSet[]>([]);
+  sets$ = this.setsSubject.asObservable();
 
   async addSet(set: {
     locationId: number;
@@ -19,35 +19,35 @@ export class SetsService {
     passes: SkiPass[];
   }) {
     let maxScore = 0;
+    let bestPass = '';
     for (const pass of set.passes) {
-      maxScore = Math.max(calculatePassScore(pass, set.isTournament), maxScore);
+      const score = calculatePassScore(pass, set.isTournament);
+      maxScore = Math.max(score, maxScore);
+      if (maxScore === score) {
+        bestPass = calculatePassTitle(pass);
+      }
     }
     const id = await (window as any).api.sets.add({
       ...set,
+      bestPass,
       score: maxScore,
       date: set.date.toISOString(),
       passes: JSON.stringify(set.passes),
     });
-    this.monthSetsSubject.next([
+    this.setsSubject.next([
       {
         ...set,
+        bestPass,
         id,
         score: maxScore,
         passes: set.passes,
       },
-      ...this.monthSetsSubject.value,
+      ...this.setsSubject.value,
     ]);
   }
 
-  async loadMonthSets() {
-    const end = new Date();
-    const start = new Date();
-    start.setDate(end.getDate() - 30);
-
-    const sets = (await (window as any).api.sets.list({
-      start: start.toISOString(),
-      end: end.toISOString(),
-    })) as any[];
-    this.monthSetsSubject.next(sets);
+  async loadSets() {
+    const sets = (await (window as any).api.sets.list()) as any[];
+    this.setsSubject.next(sets);
   }
 }

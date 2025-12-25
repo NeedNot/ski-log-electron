@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { provideIcons, NgIcon } from '@ng-icons/core';
 import {
   lucideCalendar,
+  lucideChartLine,
   lucideHouse,
   lucideInbox,
   lucideLocate,
@@ -21,7 +22,8 @@ import { HlmSidebarImports } from '@spartan-ng/helm/sidebar';
     provideIcons({
       lucideHouse,
       lucideMapPin,
-      lucidePlus
+      lucidePlus,
+      lucideChartLine,
     }),
   ],
 })
@@ -38,9 +40,14 @@ export class AppSidebar {
       icon: 'lucideMapPin',
     },
     {
+      title: 'Statistics',
+      url: '/statistics',
+      icon: 'lucideChartLine',
+    },
+    {
       title: 'Create Set',
       url: '/new-set',
-      icon: 'lucidePlus'
-    }
+      icon: 'lucidePlus',
+    },
   ];
 }

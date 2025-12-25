@@ -1,0 +1,34 @@
+<div hlmTableContainer>
+  <table hlmTable class="w-full">
+    <thead hlmTHead>
+      <tr hlmTr>
+        <th hlmTh class="w-[100px]">Date</th>
+        <th hlmTh>Best pass</th>
+        <th>Went out at</th>
+        <th hlmTh>Score</th>
+        <th hlmTh class="text-right">Passes</th>
+      </tr>
+    </thead>
+    <tbody hlmTBody>
+      @for (set of setsData; track set.id) {
+      <tr
+        (click)="toggle($index)"
+        setRow
+        hlmTr
+        class="hover:bg-neutral-200 cursor-pointer"
+        [set]="set"
+      ></tr>
+      @if ($index === selectedIndex()) {
+      <tr hlmTr class="bg-gray-100">
+        <td colspan="5" class="bg-muted py-2">
+          <div class="grid">
+            @for (pass of set.passes; track $index) {
+            <app-pass-item [pass]="pass" [index]="$index" />
+            }
+          </div>
+        </td>
+      </tr>
+      } }
+    </tbody>
+  </table>
+</div>

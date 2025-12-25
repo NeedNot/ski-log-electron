@@ -22,7 +22,7 @@ import { SetsService } from '../../services/sets.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { calculatePassScore, calculatePassTitle } from '../../../utils';
 import { LocationsService } from '../../services/locations.service';
-import { combineLatest, map } from 'rxjs';
+import { combineLatest, filter, map, Observable } from 'rxjs';
 import { ScoreChart } from '../../components/charts/score-chart/score-chart';
 
 @Component({
@@ -38,7 +38,6 @@ import { ScoreChart } from '../../components/charts/score-chart/score-chart';
     HlmEmptyImports,
     HlmButtonImports,
     ScoreChart,
-    VideoPassCard,
   ],
   providers: [
     provideIcons({
@@ -53,6 +52,7 @@ import { ScoreChart } from '../../components/charts/score-chart/score-chart';
   templateUrl: './home.html',
 })
 export class Home implements OnInit {
+  protected readonly monthSets$: Observable<SkiSet[]>;
   protected readonly monthSets: Signal<SkiSet[]>;
   protected readonly monthBestScore = computed(() =>
     Math.max(...this.monthSets().map((set) => set.score), 0)
@@ -69,7 +69,7 @@ export class Home implements OnInit {
   protected readonly recentSets!: Signal<
     {
       id: number;
-      title: string;
+      bestPass: string;
       location: string;
       month: string;
       day: string;
@@ -80,39 +80,34 @@ export class Home implements OnInit {
   >;
 
   constructor(private setsSerice: SetsService, private locationService: LocationsService) {
+    this.monthSets$ = this.setsSerice.sets$.pipe(
+      map((sets) =>
+        sets.filter((set) => set.date.getTime() >= Date.now() - 30 * 24 * 60 * 60 * 1000)
+      )
+    );
     locationService.loadLocations();
     this.recentSets = toSignal(
-      combineLatest([this.setsSerice.monthSets$, this.locationService.locations$]).pipe(
+      combineLatest([this.monthSets$, this.locationService.locations$]).pipe(
         map(([sets, locations]) => {
           const locationsMap = new Map(locations.map((loc) => [loc.id, loc.name]));
-          return sets.slice(0, 4).map((set) => {
-            let title = '';
-            for (const pass of set.passes) {
-              const s = calculatePassScore(pass, set.isTournament);
-              if (s === set.score) {
-                title = calculatePassTitle(pass);
-                break;
-              }
-            }
-            return {
-              id: set.id,
-              title,
-              location: locationsMap.get(set.locationId)!,
-              month: new Date(set.date).toLocaleDateString('en-US', { month: 'short' }),
-              day: new Date(set.date).toLocaleDateString('en-US', { day: 'numeric' }),
-              score: set.score,
-              isTournament: set.isTournament,
-              passes: set.passes.length,
-            };
-          });
+          return sets.slice(0, 4).map((set) => ({
+            id: set.id,
+            bestPass: set.bestPass,
+            location: locationsMap.get(set.locationId)!,
+            month: new Date(set.date).toLocaleDateString('en-US', { month: 'short' }),
+            day: new Date(set.date).toLocaleDateString('en-US', { day: 'numeric' }),
+            score: set.score,
+            isTournament: set.isTournament,
+            passes: set.passes.length,
+          }));
         })
       ),
       { initialValue: [] }
     );
-    this.monthSets = toSignal(this.setsSerice.monthSets$, { initialValue: [] });
+    this.monthSets = toSignal(this.monthSets$, { initialValue: [] });
   }
 
   ngOnInit() {
-    this.setsSerice.loadMonthSets();
+    this.setsSerice.loadSets();
   }
 }

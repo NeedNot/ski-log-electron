@@ -84,8 +84,8 @@
               <app-pass-card
                 [index]="$index"
                 [group]="pass"
-                [isFirst]="$index === 0"
-                [isLast]="$index === passForms.controls.length - 1"
+                [isFirst]="$first"
+                [isLast]="$last"
                 (delete)="deletePass($index)"
                 (moveUp)="movePassUp($index)"
                 (moveDown)="movePassDown($index)"
