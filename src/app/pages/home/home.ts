@@ -15,12 +15,10 @@ import { HlmSelectImports } from '@spartan-ng/helm/select';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmItemImports } from '@spartan-ng/helm/item';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
-import { VideoPassCard } from '../../components/video-pass-card/video-pass-card';
 import { HlmEmptyImports } from '@spartan-ng/helm/empty';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { SetsService } from '../../services/sets.service';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { calculatePassScore, calculatePassTitle } from '../../../utils';
 import { LocationsService } from '../../services/locations.service';
 import { combineLatest, filter, map, Observable } from 'rxjs';
 import { ScoreChart } from '../../components/charts/score-chart/score-chart';
@@ -69,7 +67,7 @@ export class Home implements OnInit {
   protected readonly recentSets!: Signal<
     {
       id: number;
-      bestPass: string;
+      label: string;
       location: string;
       month: string;
       day: string;
@@ -92,7 +90,7 @@ export class Home implements OnInit {
           const locationsMap = new Map(locations.map((loc) => [loc.id, loc.name]));
           return sets.slice(0, 4).map((set) => ({
             id: set.id,
-            bestPass: set.bestPass,
+            label: set.label,
             location: locationsMap.get(set.locationId)!,
             month: new Date(set.date).toLocaleDateString('en-US', { month: 'short' }),
             day: new Date(set.date).toLocaleDateString('en-US', { day: 'numeric' }),

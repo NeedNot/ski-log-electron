@@ -1,31 +1,39 @@
 <div hlmTableContainer>
   <table hlmTable class="w-full">
-    <thead hlmTHead>
-      <tr hlmTr>
-        <th hlmTh class="w-[100px]">Date</th>
-        <th hlmTh>Best pass</th>
-        <th>Went out at</th>
-        <th hlmTh>Score</th>
-        <th hlmTh class="text-right">Passes</th>
+    <thead hlmTHead class="bg-muted sticky top-0 z-10">
+      <tr hlmTr class="[&_th]:font-medium">
+        <th hlmTh class="text-left">
+          <span class="px-2">Date</span>
+        </th>
+        <th hlmTh class="text-left">Best pass</th>
+        <th hlmTh class="text-center">Went out at</th>
+        <th hlmTh class="text-center">Score</th>
+        <th hlmTh class="text-right ml-auto">
+          <span class="px-2"> Passes </span>
+        </th>
       </tr>
     </thead>
     <tbody hlmTBody>
       @for (set of setsData; track set.id) {
-      <tr
-        (click)="toggle($index)"
-        setRow
-        hlmTr
-        class="hover:bg-neutral-200 cursor-pointer"
-        [set]="set"
-      ></tr>
+      <tr (click)="toggle($index)" hlmTr class="cursor-pointer">
+        <td hlmTd>
+          <span class="px-2">
+            {{ set.formattedDate }}
+          </span>
+        </td>
+        <td hlmTd class="font-medium">{{ set.label }}</td>
+        <td hlmTd class="text-center">{{ set.wentOutAt }}</td>
+        <td hlmTd class="text-center">{{ set.score }}</td>
+        <td hlmTd class="text-right">
+          <span class="px-2">
+            {{ set.passes.length }}
+          </span>
+        </td>
+      </tr>
       @if ($index === selectedIndex()) {
       <tr hlmTr class="bg-gray-100">
-        <td colspan="5" class="bg-muted py-2">
-          <div class="grid">
-            @for (pass of set.passes; track $index) {
-            <app-pass-item [pass]="pass" [index]="$index" />
-            }
-          </div>
+        <td hlmTd colspan="5" class="px-5">
+          <app-pass-table [passes]="set.passes" />
         </td>
       </tr>
       } }

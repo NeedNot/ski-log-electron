@@ -1,13 +1,12 @@
-import { Component, computed, Input, signal } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { SkiSet } from '../../../../types';
 import { BoatSpeedLabel, RopeLengthLabel } from '../../../../constants';
-import { SetRow } from '../set-row/set-row';
-import { HlmTr } from '@spartan-ng/helm/table';
-import { PassItem } from '../pass-item/pass-item';
+import { HlmTableImports } from '@spartan-ng/helm/table';
+import { PassTable } from '../pass-table/pass-table';
 
 @Component({
   selector: 'app-sets-table',
-  imports: [SetRow, HlmTr, PassItem],
+  imports: [HlmTableImports, PassTable],
   templateUrl: './sets-table.html',
 })
 export class SetsTable {

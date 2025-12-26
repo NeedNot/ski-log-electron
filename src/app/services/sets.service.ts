@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { calculatePassScore, calculatePassTitle } from '../../utils';
+import { calculatePassScore, getPassLabel } from '../../utils';
 import { SkiPass } from '../../types';
 import { BehaviorSubject } from 'rxjs';
 import { SkiSet } from '../../types';
@@ -19,17 +19,17 @@ export class SetsService {
     passes: SkiPass[];
   }) {
     let maxScore = 0;
-    let bestPass = '';
+    let setLabel = '';
     for (const pass of set.passes) {
       const score = calculatePassScore(pass, set.isTournament);
       maxScore = Math.max(score, maxScore);
       if (maxScore === score) {
-        bestPass = calculatePassTitle(pass);
+        setLabel = getPassLabel(pass);
       }
     }
     const id = await (window as any).api.sets.add({
       ...set,
-      bestPass,
+      label: setLabel,
       score: maxScore,
       date: set.date.toISOString(),
       passes: JSON.stringify(set.passes),
@@ -37,7 +37,7 @@ export class SetsService {
     this.setsSubject.next([
       {
         ...set,
-        bestPass,
+        label: setLabel,
         id,
         score: maxScore,
         passes: set.passes,

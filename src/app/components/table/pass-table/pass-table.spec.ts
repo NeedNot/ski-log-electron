@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PassItem } from './pass-item';
+import { PassTable } from './pass-table';
 
-describe('PassItem', () => {
-  let component: PassItem;
-  let fixture: ComponentFixture<PassItem>;
+describe('PassTable', () => {
+  let component: PassTable;
+  let fixture: ComponentFixture<PassTable>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PassItem]
+      imports: [PassTable]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PassItem);
+    fixture = TestBed.createComponent(PassTable);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

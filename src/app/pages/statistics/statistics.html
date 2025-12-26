@@ -1,5 +1,7 @@
 <div class="sm:w-4/5 m-5 sm:m-auto max-w-5xl sm:py-16">
   <div class="grid">
-    <app-sets-table class="w-full" [sets]="filteredSets()" />
+    <div class="border rounded-md overflow-auto">
+      <app-sets-table class="w-full" [sets]="filteredSets()" />
+    </div>
   </div>
 </div>

@@ -49,7 +49,7 @@ export function calculatePassScore(pass: SkiPass, isTournament: boolean) {
   return 6 * difficulty + pass.points; //previous pass + current pass points
 }
 
-export function calculatePassTitle(pass: SkiPass) {
+export function getPassLabel(pass: SkiPass) {
   //todo use user's max speed to not show speed
   return `${pass.points} @ ${BoatSpeedLabel[pass.boatSpeed]} ${RopeLengthLabel[pass.ropeLength]}`;
 }

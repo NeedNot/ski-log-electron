@@ -1,0 +1,30 @@
+<div hlmTableContainer>
+  <table hlmTable class="w-full">
+    <thead hlmTHead>
+      <tr hlmTr>
+        <th hlmTh class="w-24 text-left">#</th>
+        <th hlmTh class="text-left">Pass</th>
+        <th hlmTh class="text-center ml-auto">Buoys</th>
+        <th hlmTh class="text-center">Speed</th>
+        <th hlmTh class="text-center">Rope length</th>
+        <th hlmTh class="text-right">Video</th>
+      </tr>
+    </thead>
+    <tbody hlmTBody>
+      @for (pass of data; track $index) {
+      <tr hlmTr>
+        <td hlmTd>{{ $index + 1 }}</td>
+        <td hlmTd>{{ pass.label }}</td>
+        <td hlmTd class="text-center">{{ pass.points }}</td>
+        <td hlmTd class="text-center">{{ pass.speedLabel }}</td>
+        <td hlmTd class="text-center">{{ pass.ropeLengthLabel }}</td>
+        <td hlmTd class="text-right">
+          <button hlmBtn variant="ghost" size="icon" title="View video" class="justify-self-end">
+            <ng-icon hlmIcon name="lucideVideo" />
+          </button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
