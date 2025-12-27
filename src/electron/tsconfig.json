@@ -6,5 +6,6 @@
     "outDir": "../../dist-electron",
     "skipLibCheck": true,
     "importsNotUsedAsValues": "remove"
-  }
+  },
+  "include": ["**/*.ts", "../shared/**/*.ts"]
 }

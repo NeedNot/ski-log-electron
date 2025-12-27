@@ -1,8 +1,9 @@
 import * as repo from '../../db/repositories/sets.repo';
 import { NewSet } from './sets.types';
+import type { SetsQuery } from '../../../shared/types';
 
-export function listSets() {
-  return repo.getSets().map((set) => ({
+export function listSets(query: SetsQuery) {
+  return repo.getSets(query).map((set) => ({
     ...set,
     locationId: set.location_id,
     isTournament: set.is_tournament === 1,
