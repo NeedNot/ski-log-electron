@@ -1,7 +1,24 @@
 <div class="sm:w-4/5 m-5 sm:m-auto max-w-5xl sm:py-16">
   <div class="grid">
+    <div class="flex items-center ml-auto mb-2 gap-4">
+      <hlm-tabs [tab]="selectedTab()" (tabActivated)="tabActivated($event)">
+        <hlm-tabs-list class="w-full" aria-label="date range tabs">
+          @for (tab of dateTabs; track tab) {
+          <button class="w-10" [hlmTabsTrigger]="tab">{{ tab }}</button>
+          }
+        </hlm-tabs-list>
+      </hlm-tabs>
+      <span>or</span>
+      <hlm-date-range-picker
+        captionLayout="dropdown-years"
+        (dateChange)="dateRangeChange($event!)"
+        class="w-48"
+      >
+        <span>Custom range</span>
+      </hlm-date-range-picker>
+    </div>
     <div class="border rounded-md overflow-auto">
-      <app-sets-table class="w-full" [sets]="filteredSets()" />
+      <app-sets-table class="w-full" [sets]="sets()" />
     </div>
   </div>
 </div>

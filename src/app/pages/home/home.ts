@@ -78,11 +78,7 @@ export class Home implements OnInit {
   >;
 
   constructor(private setsSerice: SetsService, private locationService: LocationsService) {
-    this.monthSets$ = this.setsSerice.sets$.pipe(
-      map((sets) =>
-        sets.filter((set) => set.date.getTime() >= Date.now() - 30 * 24 * 60 * 60 * 1000)
-      )
-    );
+    this.monthSets$ = Observable.create(() => {});
     locationService.loadLocations();
     this.recentSets = toSignal(
       combineLatest([this.monthSets$, this.locationService.locations$]).pipe(
