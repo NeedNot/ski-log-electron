@@ -38,6 +38,7 @@
     "@ng-icons/core": ">=32.0.0 <34.0.0",
     "@ng-icons/lucide": ">=32.0.0 <34.0.0",
     "@spartan-ng/brain": "^0.0.1-alpha.580",
+    "@tanstack/angular-table": "^8.21.3",
     "@types/better-sqlite3": "^7.6.13",
     "ag-charts-angular": "^13.0.0",
     "better-sqlite3": "^12.5.0",

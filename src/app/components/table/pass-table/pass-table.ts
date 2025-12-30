@@ -15,7 +15,10 @@ import { HlmTableImports } from '@spartan-ng/helm/table';
 })
 export class PassTable {
   @Input({ required: true }) passes!: SkiPass[];
-  pass: any;
+
+  constructor() {
+    console.log(this.passes);
+  }
 
   get data() {
     return this.passes.map((pass) => ({

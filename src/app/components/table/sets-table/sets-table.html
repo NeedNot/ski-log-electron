@@ -1,39 +1,37 @@
 <div hlmTableContainer>
   <table hlmTable class="w-full">
     <thead hlmTHead class="bg-muted sticky top-0 z-10">
+      @for (headerGroup of table.getHeaderGroups(); track headerGroup.id) {
       <tr hlmTr class="[&_th]:font-medium">
-        <th hlmTh class="text-left">
-          <span class="px-2">Date</span>
+        @for (header of headerGroup.headers; track header.id) { @if (!header.isPlaceholder) {
+        <th hlmTh>
+          <ng-container
+            *flexRender="header.column.columnDef.header; props: header.getContext(); let header"
+          >
+            <div [innerHTML]="header"></div>
+          </ng-container>
         </th>
-        <th hlmTh class="text-left">Best pass</th>
-        <th hlmTh class="text-center">Went out at</th>
-        <th hlmTh class="text-center">Score</th>
-        <th hlmTh class="text-right ml-auto">
-          <span class="px-2"> Passes </span>
-        </th>
+        } }
       </tr>
+      }
     </thead>
     <tbody hlmTBody>
-      @for (set of setsData; track set.id) {
-      <tr (click)="toggle($index)" hlmTr class="cursor-pointer">
+      @for (row of table.getRowModel().rows; track row.id) {
+      <tr (click)="row.toggleSelected()" hlmTr class="cursor-pointer">
+        @for (cell of row.getVisibleCells(); track cell.id) {
         <td hlmTd>
-          <span class="px-2">
-            {{ set.formattedDate }}
-          </span>
+          <ng-container
+            *flexRender="cell.column.columnDef.cell; props: cell.getContext(); let cell"
+          >
+            <div [innerHTML]="cell"></div>
+          </ng-container>
         </td>
-        <td hlmTd class="font-medium">{{ set.label }}</td>
-        <td hlmTd class="text-center">{{ set.wentOutAt }}</td>
-        <td hlmTd class="text-center">{{ set.score }}</td>
-        <td hlmTd class="text-right">
-          <span class="px-2">
-            {{ set.passes.length }}
-          </span>
-        </td>
+        }
       </tr>
-      @if ($index === selectedIndex()) {
+      @if (row.getIsSelected()) {
       <tr hlmTr class="bg-gray-100">
         <td hlmTd colspan="5" class="px-5">
-          <app-pass-table [passes]="set.passes" />
+          <app-pass-table [passes]="table.getSelectedRowModel().flatRows[0].original.passes" />
         </td>
       </tr>
       } }

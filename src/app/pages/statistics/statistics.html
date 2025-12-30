@@ -17,8 +17,33 @@
         <span>Custom range</span>
       </hlm-date-range-picker>
     </div>
-    <div class="border rounded-md overflow-auto">
-      <app-sets-table class="w-full" [sets]="sets()" />
+    <div class="border rounded-md overflow-auto mb-2">
+      <app-sets-table class="w-full" [table]="table" />
+    </div>
+    <!-- todo -->
+    <div class="ml-auto">
+      <nav hlmPagination class="">
+        <ul hlmPaginationContent>
+          <li hlmPaginationItem>
+            <hlm-pagination-previous link="/components/menubar" />
+          </li>
+          <li hlmPaginationItem>
+            <a hlmPaginationLink link="#">1</a>
+          </li>
+          <li hlmPaginationItem>
+            <a hlmPaginationLink link="#" isActive>2</a>
+          </li>
+          <li hlmPaginationItem>
+            <a hlmPaginationLink link="#">3</a>
+          </li>
+          <li hlmPaginationItem>
+            <hlm-pagination-ellipsis />
+          </li>
+          <li hlmPaginationItem>
+            <hlm-pagination-next link="/components/popover" />
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 </div>

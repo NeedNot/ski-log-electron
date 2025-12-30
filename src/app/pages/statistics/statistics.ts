@@ -7,10 +7,53 @@ import {
 } from '@spartan-ng/helm/date-picker';
 import { SetsTable } from '../../components/table/sets-table/sets-table';
 import { SkiSet } from '../../../types';
+import { HlmPaginationImports } from '@spartan-ng/helm/pagination';
+import { ColumnDef, createAngularTable, getCoreRowModel } from '@tanstack/angular-table';
+import { BoatSpeedLabel, RopeLengthLabel } from '../../../constants';
+
+const defaultColumns: ColumnDef<SkiSet>[] = [
+  {
+    accessorKey: 'date',
+    cell: (info) => {
+      const value = info.getValue() as Date | undefined;
+      if (!value) return '';
+
+      const year = value.getFullYear();
+      const localeOptions: Intl.DateTimeFormatOptions =
+        new Date().getFullYear() === year
+          ? { month: 'short', day: 'numeric' }
+          : { month: 'short', day: 'numeric', year: 'numeric' };
+
+      return value.toLocaleDateString('en-US', localeOptions);
+    },
+    footer: (info) => info.column.id,
+  },
+  {
+    accessorKey: 'label',
+    cell: (info) => info.getValue(),
+    header: 'Best pass',
+  },
+  {
+    accessorFn: (row) =>
+      `${RopeLengthLabel[row.passes[0].ropeLength]} @ ${BoatSpeedLabel[row.passes[0].boatSpeed]}`,
+    cell: (info) => info.getValue(),
+    header: 'Went out at',
+  },
+  {
+    accessorKey: 'score',
+    cell: (info) => info.getValue(),
+    header: 'Score',
+  },
+  {
+    accessorKey: 'passes',
+    cell: (info) => (info.getValue() as SkiSet[]).length,
+    header: 'Passes',
+  },
+];
 
 @Component({
   selector: 'app-statistics',
-  imports: [HlmTabsImports, HlmDatePickerImports, SetsTable],
+  imports: [HlmTabsImports, HlmDatePickerImports, SetsTable, HlmPaginationImports],
   providers: [
     provideHlmDateRangePickerConfig({
       formatDates: (dates: [Date | undefined, Date | undefined]) =>
@@ -29,6 +72,13 @@ export class Statistics {
     undefined,
   ]);
   protected setsQuery = {};
+
+  table = createAngularTable(() => ({
+    data: this.sets(),
+    columns: defaultColumns,
+    getCoreRowModel: getCoreRowModel(),
+    enableMultiRowSelection: false,
+  }));
 
   constructor(private setsService: SetsService) {
     this.setsQuery = { range: { start: new Date('2025-12-10'), end: new Date() } };
