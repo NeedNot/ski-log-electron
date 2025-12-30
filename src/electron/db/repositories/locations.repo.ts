@@ -1,13 +1,14 @@
 import { db } from '..';
+import { NewLocation } from '../types';
 
 export function getLocations() {
-  return db.prepare('SELECT * FROM locations ORDER BY id DESC').all();
+  return db.selectFrom('locations').selectAll().orderBy('id', 'desc').execute();
 }
 
-export function addLocation(name: string) {
-  return db.prepare('INSERT INTO locations (name) VALUES (?)').run(name).lastInsertRowid;
+export function addLocation(location: NewLocation) {
+  return db.insertInto('locations').values(location).returning('id').executeTakeFirst();
 }
 
 export function deleteLocation(id: number) {
-  return db.prepare('DELETE FROM locations WHERE id = ?').run(id);
+  return db.deleteFrom('locations').where('locations.id', '=', id).execute();
 }

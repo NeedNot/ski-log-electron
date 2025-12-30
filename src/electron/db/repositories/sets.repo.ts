@@ -1,66 +1,45 @@
 import { db } from '..';
 import type { SetsQuery } from '../../../shared/types';
+import { NewSet } from '../types';
 
 const ITEMS_PER_PAGE = 100;
 
-export function addSet(
-  locationId: number,
-  date: string,
-  isTournament: number,
-  comments: string,
-  score: number,
-  passes: string
-) {
-  return db
-    .prepare(
-      'INSERT INTO sets (date, location_id, is_tournament, comments, score, passes) VALUES (?, ?, ?, ?, ?, ?)'
-    )
-    .run(date, locationId, isTournament, comments, score, passes).lastInsertRowid;
+export function addSet(newSet: NewSet) {
+  return db.insertInto('sets').values(newSet).returning('id').executeTakeFirst();
 }
 
-export function getSets({ page, range }: SetsQuery) {
+export async function getSets({ page, range }: SetsQuery) {
   const safePage = Number.isInteger(page) && page! >= 0 ? page! : 0;
   const startDate = normalizeDate(range?.start);
   const endDate = normalizeDate(range?.end);
 
-  let where = '';
-  const params: any[] = [];
+  let dbQuery = db.selectFrom('sets').selectAll();
   if (startDate && endDate) {
-    where = `WHERE date >= ? and date <= ?`;
-    params.push(startDate, endDate);
+    dbQuery = dbQuery.where('date', '>=', startDate).where('date', '<=', endDate);
   }
+  const items = dbQuery
+    .orderBy('date', 'desc')
+    .orderBy('id', 'desc')
+    .limit(ITEMS_PER_PAGE)
+    .offset(safePage * ITEMS_PER_PAGE);
 
-  const items = db
-    .prepare(
-      `
-      SELECT *
-      FROM sets
-      ${where}
-      ORDER BY date DESC, id DESC
-      LIMIT ${ITEMS_PER_PAGE} OFFSET ?
-    `
-    )
-    .all(...params, safePage * ITEMS_PER_PAGE);
-  return items as any[];
+  return items.execute();
 }
 
-export function getSetsMeta({ range }: SetsQuery) {
+export async function getSetsMeta({ range }: SetsQuery) {
   const startDate = normalizeDate(range?.start);
   const endDate = normalizeDate(range?.end);
 
-  let where = '';
-  const params: any[] = [];
+  let dbQuery = db.selectFrom('sets').select((eb) => [eb.fn.count('id').as('count')]);
   if (startDate && endDate) {
-    where = `WHERE date >= ? and date <= ?`;
-    params.push(startDate, endDate);
+    dbQuery = dbQuery.where('date', '>=', startDate).where('date', '<=', endDate);
   }
 
-  const res = db.prepare(`SELECT COUNT(*) as count FROM sets ${where}`).get(...params) as {
-    count: number;
-  };
+  const res = await dbQuery.executeTakeFirst();
+  const count = Number(res ?? 0);
   return {
     itemsPerPage: ITEMS_PER_PAGE,
-    totalPages: Math.ceil(res.count / ITEMS_PER_PAGE),
+    totalPages: Math.ceil(count / ITEMS_PER_PAGE),
   };
 }
 

@@ -1,10 +1,9 @@
 import * as repo from '../../db/repositories/sets.repo';
-import { NewSet } from './sets.types';
 import type { SetsQuery, SkiSetsResponse } from '../../../shared/types';
+import { NewSet } from '../../db/types';
 
-export function listSets(query: SetsQuery): SkiSetsResponse {
-  const sets = repo.getSets(query);
-  const meta = repo.getSetsMeta(query);
+export async function listSets(query: SetsQuery): Promise<SkiSetsResponse> {
+  const [sets, meta] = await Promise.all([repo.getSets(query), repo.getSetsMeta(query)]);
   return {
     ...meta,
     sets: sets.map((set) => ({
@@ -17,6 +16,6 @@ export function listSets(query: SetsQuery): SkiSetsResponse {
   };
 }
 
-export function createSet({ locationId, date, isTournament, comments, score, passes }: NewSet) {
-  return repo.addSet(locationId, date, isTournament ? 1 : 0, comments, score, passes);
+export function createSet(newSet: NewSet) {
+  return repo.addSet(newSet);
 }

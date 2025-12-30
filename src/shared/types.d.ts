@@ -4,6 +4,10 @@ export type SetsQuery = {
     end: Date;
   };
   page?: number;
+  sorting?: {
+    id: string;
+    desc: boolean;
+  }[];
 };
 
 export type SkiSetsResponse = {

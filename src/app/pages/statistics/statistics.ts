@@ -13,6 +13,7 @@ import {
   createAngularTable,
   getCoreRowModel,
   PaginationState,
+  SortingState,
 } from '@tanstack/angular-table';
 import { BoatSpeedLabel, RopeLengthLabel } from '../../../constants';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
@@ -43,7 +44,8 @@ const defaultColumns: ColumnDef<SkiSet>[] = [
 
       return value.toLocaleDateString('en-US', localeOptions);
     },
-    footer: (info) => info.column.id,
+    header: 'Date',
+    enableSorting: true,
   },
   {
     accessorKey: 'label',
@@ -95,6 +97,7 @@ const defaultColumns: ColumnDef<SkiSet>[] = [
   ],
   templateUrl: './statistics.html',
 })
+// todo table logic should be abstracted somehow
 export class Statistics {
   protected readonly dateTabs = ['7d', '30d', 'YTD', 'All'];
 
@@ -107,8 +110,9 @@ export class Statistics {
   protected setsResponse = signal<SkiSetsResponse | null>(null);
 
   protected readonly _sets = computed(() => this.setsResponse()?.sets ?? []);
+  protected readonly _sorting = signal<SortingState>([]);
   protected readonly _pagination = signal<PaginationState>({
-    pageSize: 2,
+    pageSize: 100,
     pageIndex: 0,
   });
   protected readonly _pageCount = computed(() => this.setsResponse()?.totalPages ?? 0);
@@ -118,6 +122,11 @@ export class Statistics {
     columns: defaultColumns,
     getCoreRowModel: getCoreRowModel(),
     enableMultiRowSelection: false,
+    manualSorting: true,
+    onSortingChange: (updater) => {
+      updater instanceof Function ? this._sorting.update(updater) : this._sorting.set(updater);
+      this.refreshSets();
+    },
     manualPagination: true,
     onPaginationChange: (updater) => {
       updater instanceof Function
@@ -127,6 +136,7 @@ export class Statistics {
     },
     pageCount: this._pageCount(),
     state: {
+      sorting: this._sorting(),
       pagination: this._pagination(),
     },
   }));
@@ -137,9 +147,11 @@ export class Statistics {
   }
 
   async refreshSets() {
+    this.table.resetRowSelection();
     const response = await this.setsService.loadSets({
       ...this.setsQuery,
       page: this._pagination().pageIndex,
+      sorting: this._sorting(),
     });
     this.setsResponse.set(response);
   }

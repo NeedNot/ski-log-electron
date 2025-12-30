@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import { NewSet } from './features/sets/sets.types';
+import { NewSet } from './db/types';
 
 contextBridge.exposeInMainWorld('api', {
   locations: {
