@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { HlmTabsImports } from '@spartan-ng/helm/tabs';
 import { SetsService } from '../../services/sets.service';
 import {
@@ -8,8 +8,25 @@ import {
 import { SetsTable } from '../../components/table/sets-table/sets-table';
 import { SkiSet } from '../../../types';
 import { HlmPaginationImports } from '@spartan-ng/helm/pagination';
-import { ColumnDef, createAngularTable, getCoreRowModel } from '@tanstack/angular-table';
+import {
+  ColumnDef,
+  createAngularTable,
+  getCoreRowModel,
+  PaginationState,
+} from '@tanstack/angular-table';
 import { BoatSpeedLabel, RopeLengthLabel } from '../../../constants';
+import { BrnSelectImports } from '@spartan-ng/brain/select';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { HlmSelectImports } from '@spartan-ng/helm/select';
+import {
+  lucideChevronLeft,
+  lucideChevronRight,
+  lucideChevronsLeft,
+  lucideChevronsRight,
+} from '@ng-icons/lucide';
+import { HlmIconImports } from '@spartan-ng/helm/icon';
+import { HlmButtonImports } from '@spartan-ng/helm/button';
+import { SetsQuery, SkiSetsResponse } from '../../../shared/types';
 
 const defaultColumns: ColumnDef<SkiSet>[] = [
   {
@@ -53,8 +70,24 @@ const defaultColumns: ColumnDef<SkiSet>[] = [
 
 @Component({
   selector: 'app-statistics',
-  imports: [HlmTabsImports, HlmDatePickerImports, SetsTable, HlmPaginationImports],
+  imports: [
+    HlmTabsImports,
+    HlmDatePickerImports,
+    SetsTable,
+    HlmPaginationImports,
+    BrnSelectImports,
+    NgIcon,
+    HlmSelectImports,
+    HlmIconImports,
+    HlmButtonImports,
+  ],
   providers: [
+    provideIcons({
+      lucideChevronLeft,
+      lucideChevronRight,
+      lucideChevronsLeft,
+      lucideChevronsRight,
+    }),
     provideHlmDateRangePickerConfig({
       formatDates: (dates: [Date | undefined, Date | undefined]) =>
         dates.map((date) => date?.toLocaleDateString('en-US', { dateStyle: 'short' })).join(' - '),
@@ -63,7 +96,6 @@ const defaultColumns: ColumnDef<SkiSet>[] = [
   templateUrl: './statistics.html',
 })
 export class Statistics {
-  protected readonly sets = signal<SkiSet[]>([]);
   protected readonly dateTabs = ['7d', '30d', 'YTD', 'All'];
 
   protected readonly selectedTab = signal<(typeof this.dateTabs)[number]>('30d');
@@ -71,13 +103,32 @@ export class Statistics {
     undefined,
     undefined,
   ]);
-  protected setsQuery = {};
+  protected setsQuery: SetsQuery = {};
+  protected setsResponse = signal<SkiSetsResponse | null>(null);
+
+  protected readonly _sets = computed(() => this.setsResponse()?.sets ?? []);
+  protected readonly _pagination = signal<PaginationState>({
+    pageSize: 2,
+    pageIndex: 0,
+  });
+  protected readonly _pageCount = computed(() => this.setsResponse()?.totalPages ?? 0);
 
   table = createAngularTable(() => ({
-    data: this.sets(),
+    data: this._sets(),
     columns: defaultColumns,
     getCoreRowModel: getCoreRowModel(),
     enableMultiRowSelection: false,
+    manualPagination: true,
+    onPaginationChange: (updater) => {
+      updater instanceof Function
+        ? this._pagination.update(updater)
+        : this._pagination.set(updater);
+      this.refreshSets();
+    },
+    pageCount: this._pageCount(),
+    state: {
+      pagination: this._pagination(),
+    },
   }));
 
   constructor(private setsService: SetsService) {
@@ -86,14 +137,18 @@ export class Statistics {
   }
 
   async refreshSets() {
-    const sets = await this.setsService.loadSets(this.setsQuery);
-    this.sets.set(sets);
+    const response = await this.setsService.loadSets({
+      ...this.setsQuery,
+      page: this._pagination().pageIndex,
+    });
+    this.setsResponse.set(response);
   }
 
   dateRangeChange(values: [Date | undefined, Date | undefined]) {
     if (!values[0] || !values[1]) return;
     this.selectedTab.set('');
     this.setsQuery = { ...this.setsQuery, range: { start: values[0], end: values[1] } };
+    this.table.setPageIndex(0);
     this.refreshSets();
   }
 
@@ -103,15 +158,16 @@ export class Statistics {
     const end = new Date();
     if (tab === '7d') {
       start.setDate(start.getDate() - 7);
-    }
-    if (tab === '30d') {
+    } else if (tab === '30d') {
       start.setDate(start.getDate() - 30);
-    }
-    if (tab === 'YTD') {
+    } else if (tab === 'YTD') {
       start.setMonth(0);
       start.setDate(1);
     }
-    this.setsQuery = { ...this.setsQuery, range: { start, end } };
+    const range = tab === 'All' ? undefined : { start, end };
+
+    this.setsQuery = { ...this.setsQuery, range };
+    this.table.setPageIndex(0);
     this.refreshSets();
   }
 }

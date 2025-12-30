@@ -17,33 +17,47 @@
         <span>Custom range</span>
       </hlm-date-range-picker>
     </div>
-    <div class="border rounded-md overflow-auto mb-2">
+    <div class="border rounded-md overflow-auto mb-2 shadow-md">
       <app-sets-table class="w-full" [table]="table" />
     </div>
     <!-- todo -->
-    <div class="ml-auto">
-      <nav hlmPagination class="">
-        <ul hlmPaginationContent>
-          <li hlmPaginationItem>
-            <hlm-pagination-previous link="/components/menubar" />
-          </li>
-          <li hlmPaginationItem>
-            <a hlmPaginationLink link="#">1</a>
-          </li>
-          <li hlmPaginationItem>
-            <a hlmPaginationLink link="#" isActive>2</a>
-          </li>
-          <li hlmPaginationItem>
-            <a hlmPaginationLink link="#">3</a>
-          </li>
-          <li hlmPaginationItem>
-            <hlm-pagination-ellipsis />
-          </li>
-          <li hlmPaginationItem>
-            <hlm-pagination-next link="/components/popover" />
-          </li>
-        </ul>
-      </nav>
+    <div class="flex space-x-1 ml-auto">
+      <button
+        size="icon-sm"
+        variant="outline"
+        hlmBtn
+        [disabled]="!table.getCanPreviousPage()"
+        (click)="table.firstPage()"
+      >
+        <ng-icon hlmIcon name="lucideChevronsLeft" size="sm" />
+      </button>
+      <button
+        size="icon-sm"
+        variant="outline"
+        hlmBtn
+        [disabled]="!table.getCanPreviousPage()"
+        (click)="table.previousPage()"
+      >
+        <ng-icon hlmIcon name="lucideChevronLeft" size="sm" />
+      </button>
+      <button
+        size="icon-sm"
+        variant="outline"
+        hlmBtn
+        [disabled]="!table.getCanNextPage()"
+        (click)="table.nextPage()"
+      >
+        <ng-icon hlmIcon name="lucideChevronRight" size="sm" />
+      </button>
+      <button
+        size="icon-sm"
+        variant="outline"
+        hlmBtn
+        [disabled]="!table.getCanNextPage()"
+        (click)="table.lastPage()"
+      >
+        <ng-icon hlmIcon name="lucideChevronsRight" size="sm" />
+      </button>
     </div>
   </div>
 </div>

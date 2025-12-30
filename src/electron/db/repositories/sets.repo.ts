@@ -1,6 +1,8 @@
 import { db } from '..';
 import type { SetsQuery } from '../../../shared/types';
 
+const ITEMS_PER_PAGE = 100;
+
 export function addSet(
   locationId: number,
   date: string,
@@ -16,7 +18,7 @@ export function addSet(
     .run(date, locationId, isTournament, comments, score, passes).lastInsertRowid;
 }
 
-export function getSets({ page, range }: SetsQuery): any[] {
+export function getSets({ page, range }: SetsQuery) {
   const safePage = Number.isInteger(page) && page! >= 0 ? page! : 0;
   const startDate = normalizeDate(range?.start);
   const endDate = normalizeDate(range?.end);
@@ -27,19 +29,39 @@ export function getSets({ page, range }: SetsQuery): any[] {
     where = `WHERE date >= ? and date <= ?`;
     params.push(startDate, endDate);
   }
-  params.push(safePage * 100);
 
-  return db
+  const items = db
     .prepare(
       `
       SELECT *
       FROM sets
       ${where}
       ORDER BY date DESC, id DESC
-      LIMIT 100 OFFSET ?
+      LIMIT ${ITEMS_PER_PAGE} OFFSET ?
     `
     )
-    .all(...params);
+    .all(...params, safePage * ITEMS_PER_PAGE);
+  return items as any[];
+}
+
+export function getSetsMeta({ range }: SetsQuery) {
+  const startDate = normalizeDate(range?.start);
+  const endDate = normalizeDate(range?.end);
+
+  let where = '';
+  const params: any[] = [];
+  if (startDate && endDate) {
+    where = `WHERE date >= ? and date <= ?`;
+    params.push(startDate, endDate);
+  }
+
+  const res = db.prepare(`SELECT COUNT(*) as count FROM sets ${where}`).get(...params) as {
+    count: number;
+  };
+  return {
+    itemsPerPage: ITEMS_PER_PAGE,
+    totalPages: Math.ceil(res.count / ITEMS_PER_PAGE),
+  };
 }
 
 function normalizeDate(value: unknown): string | null {

@@ -5,3 +5,9 @@ export type SetsQuery = {
   };
   page?: number;
 };
+
+export type SkiSetsResponse = {
+  sets: SkiSet[];
+  itemsPerPage: number;
+  totalPages: number;
+};
