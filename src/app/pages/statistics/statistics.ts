@@ -11,6 +11,7 @@ import { HlmPaginationImports } from '@spartan-ng/helm/pagination';
 import {
   ColumnDef,
   createAngularTable,
+  flexRenderComponent,
   getCoreRowModel,
   PaginationState,
   SortingState,
@@ -28,6 +29,8 @@ import {
 import { HlmIconImports } from '@spartan-ng/helm/icon';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { SetsQuery, SkiSetsResponse } from '../../../shared/types';
+import { TableHeadSortButton } from '../../components/data-table/sort-header-button';
+import { calculatePassScore, getPassLabel } from '../../../utils';
 
 const defaultColumns: ColumnDef<SkiSet>[] = [
   {
@@ -44,29 +47,38 @@ const defaultColumns: ColumnDef<SkiSet>[] = [
 
       return value.toLocaleDateString('en-US', localeOptions);
     },
-    header: 'Date',
+    header: () => flexRenderComponent(TableHeadSortButton, { inputs: { header: 'Date' } }),
     enableSorting: true,
   },
   {
-    accessorKey: 'label',
-    cell: (info) => info.getValue(),
-    header: 'Best pass',
+    // todo calculate score
+    id: 'best_score',
+    accessorKey: 'bestIndex',
+    cell: (info) => getPassLabel(info.row.original.passes[info.getValue() as number]),
+    header: () => flexRenderComponent(TableHeadSortButton, { inputs: { header: 'Best pass' } }),
+    enableSorting: true,
   },
   {
+    // todo calculate score
+    id: 'opening_pass',
     accessorFn: (row) =>
       `${RopeLengthLabel[row.passes[0].ropeLength]} @ ${BoatSpeedLabel[row.passes[0].boatSpeed]}`,
     cell: (info) => info.getValue(),
-    header: 'Went out at',
+    header: () => flexRenderComponent(TableHeadSortButton, { inputs: { header: 'Went out at' } }),
+    enableSorting: true,
   },
   {
     accessorKey: 'score',
     cell: (info) => info.getValue(),
-    header: 'Score',
+    header: () => flexRenderComponent(TableHeadSortButton, { inputs: { header: 'Score' } }),
+    enableSorting: true,
   },
   {
     accessorKey: 'passes',
     cell: (info) => (info.getValue() as SkiSet[]).length,
-    header: 'Passes',
+    header: () => flexRenderComponent(TableHeadSortButton, { inputs: { header: 'Passes' } }),
+    // todo sql needs to know how to sort this
+    enableSorting: true,
   },
 ];
 

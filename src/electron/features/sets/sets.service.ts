@@ -9,6 +9,7 @@ export async function listSets(query: SetsQuery): Promise<SkiSetsResponse> {
     sets: sets.map((set) => ({
       ...set,
       locationId: set.location_id,
+      bestIndex: set.best_index,
       isTournament: set.is_tournament === 1,
       passes: JSON.parse(set.passes),
       date: new Date(set.date),

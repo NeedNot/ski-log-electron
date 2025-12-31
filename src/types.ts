@@ -32,6 +32,7 @@ export type SkiSet = {
   id: number;
   label: string;
   date: Date;
+  bestIndex: number;
   locationId: number;
   isTournament: boolean;
   score: number;

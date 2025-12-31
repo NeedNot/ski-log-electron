@@ -14,17 +14,19 @@ export interface SetsTable {
   id: Generated<number>;
   location_id: number;
   date: string;
-  best_pass: string;
+  best_index: number;
+  best_score: number;
   is_tournament: number;
   comments: ColumnType<string | undefined>;
   score: number;
   passes: string;
+  opening_pass: number;
 }
 
 export type Location = Selectable<LocationsTable>;
 export type NewLocation = Insertable<LocationsTable>;
 export type LocationUpdate = Updateable<LocationsTable>;
 
-export type Set = Selectable<SetsTable>;
+export type SetRow = Selectable<SetsTable>;
 export type NewSet = Insertable<SetsTable>;
 export type SetUpdate = Updateable<SetsTable>;

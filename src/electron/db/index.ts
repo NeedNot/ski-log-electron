@@ -19,16 +19,19 @@ export function initDB(dbPath: string) {
       name TEXT NOT NULL COLLATE NOCASE UNIQUE
     );
 
-    CREATE TABLE IF NOT EXISTS sets (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      location_id INTEGER NOT NULL,
-      date TEXT NOT NULL,
-      best_pass TEXT NOT NULL,
-      is_tournament INTEGER NOT NULL,
-      comments TEXT,
-      score FLOAT NOT NULL,
-      passes TEXT NOT NULL,
-      FOREIGN KEY (location_id) REFERENCES locations (id)
+    CREATE TABLE IF NOT EXISTS "sets" (
+      "id"	INTEGER,
+      "location_id"	INTEGER NOT NULL,
+      "date"	TEXT NOT NULL,
+      "is_tournament"	INTEGER NOT NULL DEFAULT 0,
+      "comments"	TEXT,
+      "score"	REAL NOT NULL,
+      "passes"	TEXT NOT NULL,
+      "best_index"	INTEGER NOT NULL DEFAULT 0,
+      "best_score"	REAL NOT NULL DEFAULT 0,
+      "opening_pass"	REAL NOT NULL DEFAULT 0,
+      PRIMARY KEY("id" AUTOINCREMENT),
+      FOREIGN KEY("location_id") REFERENCES "locations"("id")
     );
   `);
 }

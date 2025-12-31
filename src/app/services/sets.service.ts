@@ -16,35 +16,34 @@ type SkiSetFormValue = {
   providedIn: 'root',
 })
 export class SetsService {
-  private readonly cache = new Map<string, SkiSet[]>();
-  private readonly _sets = signal<SkiSet[]>([]);
-  private readonly sets = this._sets.asReadonly();
-
   async loadSets(query: SetsQuery = {}) {
     return await (window as any).api.sets.list(query);
   }
 
   async addSet(set: SkiSetFormValue) {
     let maxScore = 0;
+    let maxIndex = 0;
     let setLabel = '';
-    for (const pass of set.passes) {
+    for (let index = 0; index < set.passes.length; index++) {
+      const pass = set.passes[index];
       const score = calculatePassScore(pass, set.isTournament);
       maxScore = Math.max(score, maxScore);
-      if (maxScore === score) {
+      if (score === maxScore) {
+        maxIndex = index;
         setLabel = getPassLabel(pass);
       }
     }
-    await (window as any).api.sets.add({
-      ...set,
-      label: setLabel,
-      score: maxScore,
-      date: set.date.toISOString(),
-      passes: JSON.stringify(set.passes),
-    });
-    this.invalidateAll();
-  }
 
-  invalidateAll() {
-    this.cache.clear();
+    await (window as any).api.sets.add({
+      location_id: set.locationId,
+      date: set.date.toISOString(),
+      best_index: maxIndex,
+      best_score: maxScore,
+      is_tournament: set.isTournament ? 1 : 0,
+      score: maxScore,
+      passes: JSON.stringify(set.passes),
+      comments: set.comments,
+      opening_pass: calculatePassScore({ ...set.passes[0], points: 6 }, false),
+    });
   }
 }
