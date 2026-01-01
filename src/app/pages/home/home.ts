@@ -1,4 +1,4 @@
-import { Component, computed, OnInit, Signal } from '@angular/core';
+import { Component, computed, OnInit, signal, Signal, WritableSignal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   lucideArrowRight,
@@ -18,7 +18,7 @@ import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { HlmEmptyImports } from '@spartan-ng/helm/empty';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { SetsService } from '../../services/sets.service';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { LocationsService } from '../../services/locations.service';
 import { combineLatest, filter, map, Observable } from 'rxjs';
 import { ScoreChart } from '../../components/charts/score-chart/score-chart';
@@ -50,8 +50,7 @@ import { ScoreChart } from '../../components/charts/score-chart/score-chart';
   templateUrl: './home.html',
 })
 export class Home implements OnInit {
-  protected readonly monthSets$: Observable<SkiSet[]>;
-  protected readonly monthSets: Signal<SkiSet[]>;
+  protected readonly monthSets = signal<SkiSet[]>([]);
   protected readonly monthBestScore = computed(() =>
     Math.max(...this.monthSets().map((set) => set.score), 0)
   );
@@ -78,10 +77,12 @@ export class Home implements OnInit {
   >;
 
   constructor(private setsSerice: SetsService, private locationService: LocationsService) {
-    this.monthSets$ = Observable.create(() => {});
     locationService.loadLocations();
+    setsSerice.loadAll30DaysSets().then((res) => {
+      this.monthSets.set(res);
+    });
     this.recentSets = toSignal(
-      combineLatest([this.monthSets$, this.locationService.locations$]).pipe(
+      combineLatest([toObservable(this.monthSets), this.locationService.locations$]).pipe(
         map(([sets, locations]) => {
           const locationsMap = new Map(locations.map((loc) => [loc.id, loc.name]));
           return sets.slice(0, 4).map((set) => ({
@@ -98,7 +99,6 @@ export class Home implements OnInit {
       ),
       { initialValue: [] }
     );
-    this.monthSets = toSignal(this.monthSets$, { initialValue: [] });
   }
 
   ngOnInit() {

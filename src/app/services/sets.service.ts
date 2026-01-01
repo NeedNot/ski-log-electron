@@ -20,6 +20,26 @@ export class SetsService {
     return await (window as any).api.sets.list(query);
   }
 
+  async loadAll30DaysSets() {
+    const query = {
+      range: {
+        start: new Date(new Date().setDate(new Date().getDate() - 30)),
+        end: new Date(),
+      },
+      page: 0,
+    };
+
+    const sets = [];
+    let canLoadMore = true;
+    while (canLoadMore) {
+      const res = await this.loadSets(query);
+      sets.push(...res.sets);
+      query.page++;
+      canLoadMore = res.totalPages > query.page;
+    }
+    return sets;
+  }
+
   async addSet(set: SkiSetFormValue) {
     let maxScore = 0;
     let maxIndex = 0;
